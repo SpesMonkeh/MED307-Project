@@ -8,15 +8,15 @@ using System.Threading;
 [DisallowMultipleComponent]
 public sealed class UDPReceive : MonoBehaviour
 {
-    [SerializeField] int port = 30707; //5052;
+    [SerializeField] int port = 30707;
     [SerializeField] bool startReceiving = true;
     [SerializeField] bool printToConsole;
-    [SerializeField] string data;
+    [SerializeField] string dataStream;
     
     Thread receiveThread;
     UdpClient client;
 
-    public string Data => data;
+    public string DataStream => dataStream;
 
     public void Start()
     {
@@ -36,11 +36,11 @@ public sealed class UDPReceive : MonoBehaviour
             {
                 IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, 0);
                 byte[] dataByte = client.Receive(ref anyIP);
-                data = Encoding.UTF8.GetString(dataByte);
+                dataStream = Encoding.UTF8.GetString(dataByte);
 
                 if (printToConsole)
                 {
-                    print(data);
+                    print(dataStream);
                 }
             }
             catch (Exception err)

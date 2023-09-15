@@ -1,6 +1,7 @@
 ﻿// Copyright © Christian Holm Christensen
 // 10/09/2023
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using static P307.Runtime.Hands.HandUtils;
@@ -10,9 +11,12 @@ namespace P307.Runtime.Hands
 	[DisallowMultipleComponent]
 	public sealed class HandTracking : MonoBehaviour
 	{
+		public static Action returnToStart = delegate {  }; 
+		
 		[SerializeField] Hand hand;
 		[SerializeField] UDPReceive udpReceive;
 		[SerializeField] List<HandLandmark> landmarks = new();
+		[SerializeField, Range(1f, 10f)] float landmarkLerpTime = 2f;
 		
 		HandLandmark wristLandmark;
 		HandLandmark thumbStart;
@@ -20,9 +24,12 @@ namespace P307.Runtime.Hands
 		HandLandmark middleStart;
 		HandLandmark ringStart;
 		HandLandmark pinkyStart;
+
+		Camera mainCam;
 		
 		void Awake()
 		{
+			mainCam = Camera.main;
 			hand = FindFirstObjectByType<Hand>(FindObjectsInactive.Include);
 			udpReceive = FindFirstObjectByType<UDPReceive>(FindObjectsInactive.Include);
 		}
@@ -31,7 +38,7 @@ namespace P307.Runtime.Hands
 		{
 			if (hand != null)
 			{
-				landmarks = hand.Landmarks;
+				landmarks = hand.GetComponentInChildren<HandLandmarkStateHandler>().LandmarkComponents;
 				wristLandmark = landmarks[0];
 				thumbStart = landmarks[1];
 				indexStart = landmarks[5];
@@ -40,7 +47,7 @@ namespace P307.Runtime.Hands
 				pinkyStart = landmarks[17];
 			}
 		}
-
+		
 		Vector3 TranslateDataToCoordinates(int index, IReadOnlyList<string> coordsData)
 		{
 			float x = float.Parse(coordsData[index * 3]) / 100;
@@ -48,17 +55,26 @@ namespace P307.Runtime.Hands
 			float z = float.Parse(coordsData[index * 3 + 2]) / 100;
 			return new Vector3(x, y, z);
 		}
-		
+
 		void Update()
 		{
-			string[] landmarkCoords = get_coordinates_from(udpReceive.Data);
-			if (landmarkCoords.Length is 0)
+			if (Application.isPlaying is false)
 				return;
+			
+			string[] landmarkCoords = get_coordinates_from(udpReceive.DataStream);
+			if (landmarkCoords.Length is 0)
+			{
+				returnToStart?.Invoke();
+				return;
+			}
 			for (int i = 0; i < HAND_POINT_COUNT; i++)
 			{
-				landmarks[i].transform.localPosition = TranslateDataToCoordinates(i, landmarkCoords);
+				Vector3 localPos = landmarks[i].transform.localPosition;
+				Vector3 newPos = TranslateDataToCoordinates(i, landmarkCoords);
+				landmarks[i].transform.localPosition = Vector3.Lerp(localPos, newPos, Time.deltaTime * landmarkLerpTime);
 				HandLandmarkStateHandler.UpdateHand(landmarks);
 			}
+			
 			return;
 
 			string[] get_coordinates_from(string dataIn)

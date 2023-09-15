@@ -13,19 +13,22 @@ namespace P307.Runtime.Hands.ScriptableObjects
 		
 		[SerializeField] int id;
 		[SerializeField] string tag;
-		[SerializeField] int[] connectedLandmarks = {};
+		[SerializeField] int[] connections = {};
 
 		[SerializeField] Vector3 startPosition;
 		
 		[NonSerialized] HandLandmark landmark;
 		[NonSerialized] Vector3 currentPosition;
 
+		[NonSerialized] Vector3 meshLocalScale = new(.25f, .25f, .25f);
+
 		public Action<Vector3> moveToStartPosition = delegate {  };
 		public Action<Vector3> updatePosition = delegate {  };
 
 		public int Id => id;
 		public string Tag => tag;
-		public int[] ConnectedLandmarks => connectedLandmarks;
+		public int[] Connections => connections;
+		public Vector3 MeshLocalScale { get => meshLocalScale; set => meshLocalScale = value; }
 
 		public Vector3 StartPosition
 		{
@@ -57,7 +60,7 @@ namespace P307.Runtime.Hands.ScriptableObjects
 		{
 			id = lmIndex;
 			tag = lmTag;
-			connectedLandmarks = connectedIndices;
+			connections = HandUtils.ConnectionsToIndex[lmIndex];
 			landmark = lm;
 			updatePosition -= landmark.UpdatePosition;
 			moveToStartPosition += landmark.UpdatePosition;
@@ -71,10 +74,10 @@ namespace P307.Runtime.Hands.ScriptableObjects
 
 		public void MoveToStartPosition() => UpdateLandmarkPosition(StartPosition);
 
-		public static HandLandmarkSO Create(int index, string tag, int[] connectedIndices, HandLandmark lm)
+		public static HandLandmarkSO Create(int index, string tag, HandLandmark lm)
 		{
 			var lmSO = CreateInstance<HandLandmarkSO>();
-			lmSO.Init(index, tag, connectedIndices, lm);
+			lmSO.Init(index, tag, HandUtils.ConnectionsToIndex[index], lm);
 			return lmSO;
 		}
 	}

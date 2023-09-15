@@ -44,12 +44,6 @@ namespace P307.Runtime.Hands
 		
 		public List<HandLandmark> Landmarks => landmarks ??= GetLandmarksInContainer();
 		
-		void Awake()
-		{
-			HandUtils.UpdateLandmarkMeshes(Landmarks, landmarkPrimitive);
-			HandLandmarkStateHandler.UpdateHand(Landmarks);
-		}
-
 		List<HandLandmark> GetLandmarksInContainer() => transform.GetChild(0).GetComponentsInChildren<HandLandmark>().ToList();
 	}
 }

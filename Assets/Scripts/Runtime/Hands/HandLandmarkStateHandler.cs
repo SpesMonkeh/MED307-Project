@@ -12,9 +12,9 @@ namespace P307.Runtime.Hands
 	public sealed class HandLandmarkStateHandler : MonoBehaviour
 	{
 		[SerializeField] List<HandLandmark> landmarkComponents = new();
-		 
 		[SerializeField] HandLandmark landmarkPrefab;
-		
+		[SerializeField] PrimitiveType meshType = PrimitiveType.Sphere;
+
 		public static int[] tripleConnectionLandmarks = { 0 };
 		public static int[] doubleConnectionLandmarks = { 5, 7, 9, 13 };
 		public static int[] endConnectionLandmarks = { 4, 8, 12, 16 };
@@ -22,10 +22,31 @@ namespace P307.Runtime.Hands
 		const string HAND_LANDMARK_PREFAB_RESOURCE_PATH = "Hands/Hand Point";
 
 		public List<HandLandmark> LandmarkComponents => landmarkComponents;
+		public PrimitiveType MeshType => meshType;
 		
 		void Awake()
 		{
 			landmarkPrefab ??= Resources.Load<HandLandmark>(HAND_LANDMARK_PREFAB_RESOURCE_PATH);
+			RefreshLandmarkMeshes();
+		}
+
+		void Start()
+		{
+			if (landmarkComponents.Count is 0)
+				return;
+			HandUtils.UpdateLandmarkMeshes(landmarkComponents, meshType);
+
+		}
+
+		public HandLandmark GetLandmark(int index)
+		{
+			index = Mathf.Abs(Mathf.Clamp(index, 0, landmarkComponents.Count - 1));
+			//Debug.Log(landmarkComponents[index].name + "  " + index);
+			return landmarkComponents[index];
+		}
+		
+		public void RefreshLandmarkMeshes()
+		{
 			landmarkComponents ??= GetComponentsInChildren<HandLandmark>().ToList();
 		}
 
@@ -37,7 +58,6 @@ namespace P307.Runtime.Hands
 
 				LineRenderer lineRenderer = landmark.LineRenderer;
 				
-				lineRenderer.positionCount = 2;
 				lineRenderer.SetPosition(0, landmark.WorldPosition);
 
 				if (endConnectionLandmarks.Contains(point)) 

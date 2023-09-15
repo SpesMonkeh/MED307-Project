@@ -8,8 +8,8 @@ namespace P307.Runtime.Utils
 {
 	public static class Utils307
 	{
-		public static readonly Color P307LabelTextColor = new(0.77f, 0.59f, 0.4f);
-		public static readonly Color P307LabelBackgroundColor = new(0.2f, 0.1f, 0.56f);
+		public static readonly Color P307LabelTextColor = new(.6f, 0.7f, 0.7f);
+		public static readonly Color P307LabelBackgroundColor = new(0.1f, 0.1f, 0.36f);
 
 		const string P307_COMPONENT = "P307 Component";
 		
@@ -25,7 +25,10 @@ namespace P307.Runtime.Utils
 					color = new StyleColor(P307LabelTextColor),
 					backgroundColor = P307LabelBackgroundColor,
 					flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row),
-
+					borderTopLeftRadius = 5,
+					borderTopRightRadius = 5,
+					borderBottomLeftRadius = 5,
+					borderBottomRightRadius = 5,
 				}
 			};
 			return label;

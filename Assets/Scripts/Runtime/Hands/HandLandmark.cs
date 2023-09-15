@@ -6,38 +6,57 @@ using UnityEngine;
 
 namespace P307.Runtime.Hands
 {
-	[DisallowMultipleComponent]
+	[DisallowMultipleComponent][RequireComponent(typeof(LineRenderer))]
 	public sealed class HandLandmark : MonoBehaviour
 	{
 		[SerializeField] int index;
 		[SerializeField] string landmarkTag;
 		[SerializeField] MeshFilter meshFilter;
-		[SerializeField] LineRenderer lineRenderer;
 		[SerializeField] MeshRenderer meshRenderer;
-		[SerializeField] HandLandmarkSO landmarkValues;
+		[SerializeField] LineRenderer lineRenderer;
+		[SerializeField] HandLandmarkSO data;
 		//[SerializeField] HandLandmarkSO[] connections = { };
 		[SerializeField, Range(0f, 1f)] AnimationCurve lineCurve = new();
 		[SerializeField] PrimitiveType primitiveType = PrimitiveType.Sphere;
 		
-		public int Index => index;
 		public Vector3 WorldPosition => transform.position;
-		public LineRenderer LineRenderer => lineRenderer ??= gameObject.AddComponent<LineRenderer>();
+		public LineRenderer LineRenderer => lineRenderer = GetComponent<LineRenderer>();
 		public MeshRenderer MeshRenderer => meshRenderer ??= GetComponentInChildren<MeshRenderer>();
 		public MeshFilter MeshFilter => meshFilter ??= GetComponentInChildren<MeshFilter>();
-		public HandLandmarkSO Values { get => landmarkValues; set => landmarkValues = value; }
+		public HandLandmarkSO Values { get => data; set => data = value; }
 		public PrimitiveType PrimitiveType { get => primitiveType; set => primitiveType = value; }
 		
-		public void Init(int i, string tagText, Material material)
+		public void Init(int i, PrimitiveType meshType, Material lmMaterial, Material lineMaterial)
 		{
 			index = i;
-			landmarkTag = tagText;
-			lineRenderer ??= gameObject.AddComponent<LineRenderer>();
-			lineRenderer.materials = new[] { material };
-			lineRenderer.widthCurve = lineCurve;
-			meshRenderer = GetComponentInChildren<MeshRenderer>();
-			meshFilter = GetComponentInChildren<MeshFilter>();
+			landmarkTag = HandUtils.LandmarkTags[i];
 			
-			landmarkValues = ScriptableObject.CreateInstance<HandLandmarkSO>();
+			name = $"{i}. {landmarkTag}";
+			data = HandLandmarkSO.Create(i, landmarkTag, this);
+
+			SetupMesh(primitiveType, lmMaterial);
+
+			lineRenderer = GetComponent<LineRenderer>();
+			lineRenderer.positionCount = HandUtils.ConnectionsToIndex[i].Length;
+			lineRenderer.SetPosition(0, transform.position);
+			
+			lineRenderer.materials = new []{ lineMaterial };
+			
+			lineRenderer.widthCurve = lineCurve;
+			
+		}
+
+		void SetupMesh(PrimitiveType meshType, Material material)
+		{
+			GameObject meshGO = GameObject.CreatePrimitive(meshType);
+			meshGO.transform.SetParent(transform);
+			meshGO.name = "mesh";
+			meshGO.transform.localScale = new Vector3(.5f, .5f, .5f);
+			
+			meshRenderer = meshGO.GetComponent<MeshRenderer>();
+			meshFilter = meshGO.GetComponent<MeshFilter>();
+			meshFilter.mesh = HandUtils.GetLandmarkMesh(meshType);
+			meshRenderer.materials = new[] { material };
 		}
 
 		public void UpdatePosition(Vector3 newPos)

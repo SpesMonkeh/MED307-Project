@@ -1,7 +1,6 @@
 ﻿// Copyright © Christian Holm Christensen
 // 13/09/2023
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using P307.Runtime.Hands;
@@ -9,6 +8,7 @@ using P307.Runtime.Hands.ScriptableObjects;
 using P307.Runtime.Utils;
 using Unity.VisualScripting;
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -19,12 +19,20 @@ namespace P307Editor.Hands
 	{
 		[SerializeField] internal int primitiveTypeIndex;
 		[SerializeField] internal PrimitiveType primitiveType = PrimitiveType.Sphere;
+		[SerializeField] HandLandmark landmarkPrefab;
+		[SerializeField] Material landmarkMaterial;
+		[SerializeField] Material lineMaterial;
 		
 		Dictionary<HandLandmarkSO, VisualElement> landmarkValuesViews = new();
 
-		const string LANDMARKS = "Landmarks";
 		const string HAND_RED_MATERIAL_PATH = "Materials/HandRed";
 		const string HAND_GREEN_MATERIAL_PATH = "Materials/HandGreen";
+		const string HAND_LANDMARK_PREFAB_PATH = "Hands/Hand Point";
+
+		Material LandmarkMaterial => landmarkMaterial ??= Resources.Load<Material>(HAND_RED_MATERIAL_PATH);
+		Material LineMaterial => lineMaterial ??= Resources.Load<Material>(HAND_GREEN_MATERIAL_PATH);
+		
+		HandLandmark LandmarkPrefab => landmarkPrefab ??= Resources.Load<HandLandmark>(HAND_LANDMARK_PREFAB_PATH);
 		
 		public override VisualElement CreateInspectorGUI()
 		{
@@ -44,7 +52,10 @@ namespace P307Editor.Hands
 				}
 			};
 			container.Add(Utils307.P307Label());
-
+			
+			PropertyField meshTypeField = new PropertyField(serializedObject.FindProperty("meshType"));
+			container.Add(meshTypeField);
+			
 			Button refreshLandmarksButton = new Button(RefreshLandmarks)
 			{
 				text = "Refresh Landmarks"
@@ -65,31 +76,20 @@ namespace P307Editor.Hands
 			};
 			container.Add(landmarkMapContainer);
 
-			//AddHandLandmarkValuePackageViews(ref container);
-			
+			AddHandLandmarkValuesViews(ref container);
 			return container;
 		}
 
-		void AddHandLandmarkValuePackageViews(ref VisualElement container)
+		void AddHandLandmarkValuesViews(ref VisualElement container)
 		{
 			landmarkValuesViews.Clear();
 			
 			HandLandmark[] landmarks = target.GetComponentsInChildren<HandLandmark>().ToArray();
 
-			Dictionary<int, string> landmarkTags = HandUtils.LandmarkTags;
-			Dictionary<int, int[]> connections = HandUtils.ConnectionsToIndex;
-			
-			
-			
 			for (int i = 0; i < landmarks.Length; i++)
 			{
 				var landmark = landmarks[i];
-				if (landmark.Values == null)
-				{
-					landmark.Values = HandLandmarkSO.Create(i, landmarkTags[i], connections[i], landmark);
-				}
-
-				var viewElement = CreateLandmarkValuesPackageView(landmarkTags[i], i);
+				var viewElement = CreateLandmarkValuesPackageView(i);
 				landmarkValuesViews.Add(landmark.Values, viewElement);
 			}
 
@@ -99,23 +99,23 @@ namespace P307Editor.Hands
 			}
 		}
 
-		VisualElement CreateLandmarkValuesPackageView(string landmarkTag, int landmarkIndex)
+		VisualElement CreateLandmarkValuesPackageView(int landmarkIndex)
 		{
 			VisualElement view = new VisualElement()
 			{
 				style =
 				{
 					alignContent = new StyleEnum<Align>(Align.Stretch),
-					flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row)
+					flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row),
+					paddingBottom = 5,
 				}
 			};
-			VisualElement tagLabel = new Label("Tag: " + landmarkTag);
+			VisualElement tagLabel = new Label("Tag: " + HandUtils.LandmarkTags[landmarkIndex]);
 			VisualElement indexLabel = new Label("Index: " + landmarkIndex);
 			
 			view.Add(tagLabel);
 			view.Add(indexLabel);
 			return view;
-
 		}
         
 		void RefreshLandmarks()
@@ -123,28 +123,27 @@ namespace P307Editor.Hands
 			if (target is not HandLandmarkStateHandler stateHandler)
 				return;
 			serializedObject.Update();
-			Transform transform = stateHandler.transform;
-
-			stateHandler.LandmarkComponents.Clear();
-			Dictionary<int, string> landmarkTags = HandUtils.LandmarkTags; 
 			
+			ClearChildLandmarkGameObjects(stateHandler);
+
+			Dictionary<int, string> landmarkTags = HandUtils.LandmarkTags; 
 			for (int i = 0; i < landmarkTags.Keys.Count; i++)
 			{
 				Transform stateHandlerTf = stateHandler.transform;
 				int containerChildCount = stateHandlerTf.childCount;
 				bool landmarkFound = false;
 				string landmarkTag = $"{i}. {landmarkTags[i]}";
-				Transform landmark;
 				HandLandmark landmarkComponent;
 				
 				if (containerChildCount is not 0)
 				{
 					for (int j = 0; j < containerChildCount; j++)
-					{
-						landmark = stateHandlerTf.GetChild(j);
-						landmarkFound = landmark.name.Contains(landmarkTag);
-						landmarkComponent = landmarkFound ? landmark.GetComponent<HandLandmark>() : null;
-						if (landmarkComponent != null && stateHandler.LandmarkComponents.Contains(landmarkComponent) is false)
+					{ 
+						landmarkComponent = stateHandlerTf.GetChild(j)?.GetComponent<HandLandmark>();
+						landmarkFound = landmarkComponent != null
+						                && landmarkComponent.name.Contains(landmarkTag);
+						if (landmarkComponent != null 
+						    && stateHandler.LandmarkComponents.Contains(landmarkComponent) is false)
 							stateHandler.LandmarkComponents.Add(landmarkComponent);
 						if (landmarkFound)
 							break;
@@ -152,40 +151,35 @@ namespace P307Editor.Hands
 					if (landmarkFound)
 						continue;
 				}
-
-				const string mesh = "mesh";
+				landmarkComponent = AddLandmarkChildToStateHandler(stateHandlerTf, i);
+				landmarkComponent.MeshFilter.mesh = HandUtils.GetLandmarkMesh(stateHandler.MeshType);
 				
-				landmark = AddLandmarkChildToStateHandler(landmarkTag, stateHandlerTf, i);
-
-				var landmarkMaterial = Resources.Load<Material>(HAND_RED_MATERIAL_PATH);
-				var lineMaterial = Resources.Load<Material>(HAND_GREEN_MATERIAL_PATH);
-				PrimitiveType primitive = Enum.GetValues(typeof(PrimitiveType)).Cast<PrimitiveType>().ToArray()[primitiveTypeIndex];
-				GameObject meshGO = GameObject.CreatePrimitive(primitive);
-				meshGO.GetComponent<MeshRenderer>().SetMaterials(new List<Material> { landmarkMaterial });
-				meshGO.name = mesh;
-				Transform meshTf = meshGO.transform; 
-				meshTf.SetParent(landmark, false);
-				meshTf.localScale = new Vector3(.5f, .5f, .5f);
-				
-				landmarkComponent = landmark.GetComponent<HandLandmark>();
-				landmarkComponent.MeshFilter.mesh = HandUtils.GetLandmarkMesh(primitiveType);
 				if (stateHandler.LandmarkComponents.Contains(landmarkComponent))
 					continue;
-				
-				landmarkComponent.Init(i, landmarkTags[i], lineMaterial);
 				stateHandler.LandmarkComponents.Add(landmarkComponent);
 			}
 			serializedObject.ApplyModifiedProperties();
 		}
 
-		static Transform AddLandmarkChildToStateHandler(string landmarkTag, Transform tf, int i)
+		void ClearChildLandmarkGameObjects(HandLandmarkStateHandler stateHandler)
 		{
-			Transform landmarkTf = new GameObject(landmarkTag, typeof(HandLandmark)).transform;
-			landmarkTf.SetParent(tf, false);
-			landmarkTf.SetSiblingIndex(Mathf.Clamp(i, i, tf.childCount));
-			var landmark = landmarkTf.GetComponent<HandLandmark>();
-			landmark.Values = HandLandmarkSO.Create(i, HandUtils.LandmarkTags[i], HandUtils.ConnectionsToIndex[i], landmark);
-			return landmarkTf;
+			stateHandler.LandmarkComponents.Clear();
+			for (int i = stateHandler.transform.childCount - 1; i >= 0; i--)
+			{
+				DestroyImmediate(stateHandler.transform.GetChild(i).gameObject);
+			}
+		}
+		
+		HandLandmark AddLandmarkChildToStateHandler(Transform parentTf, int i)
+		{
+			HandLandmark landmark = Instantiate(LandmarkPrefab);
+			landmark.Init(i, primitiveType, LandmarkMaterial, LineMaterial);
+			
+			Transform landmarkTf = landmark.transform;
+			landmarkTf.SetParent(parentTf, false);
+			landmarkTf.SetSiblingIndex(Mathf.Clamp(i, i, parentTf.childCount));
+			
+			return landmark;
 		}
 	}
 }

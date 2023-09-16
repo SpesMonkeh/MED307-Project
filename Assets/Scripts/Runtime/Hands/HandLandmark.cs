@@ -15,7 +15,6 @@ namespace P307.Runtime.Hands
 		[SerializeField] MeshRenderer meshRenderer;
 		[SerializeField] LineRenderer lineRenderer;
 		[SerializeField] HandLandmarkSO data;
-		//[SerializeField] HandLandmarkSO[] connections = { };
 		[SerializeField, Range(0f, 1f)] AnimationCurve lineCurve = new();
 		[SerializeField] PrimitiveType primitiveType = PrimitiveType.Sphere;
 		
@@ -23,7 +22,7 @@ namespace P307.Runtime.Hands
 		public LineRenderer LineRenderer => lineRenderer = GetComponent<LineRenderer>();
 		public MeshRenderer MeshRenderer => meshRenderer ??= GetComponentInChildren<MeshRenderer>();
 		public MeshFilter MeshFilter => meshFilter ??= GetComponentInChildren<MeshFilter>();
-		public HandLandmarkSO Values { get => data; set => data = value; }
+		public HandLandmarkSO Data { get => data; set => data = value; }
 		public PrimitiveType PrimitiveType { get => primitiveType; set => primitiveType = value; }
 		
 		public void Init(int i, PrimitiveType meshType, Material lmMaterial, Material lineMaterial)
@@ -43,7 +42,6 @@ namespace P307.Runtime.Hands
 			lineRenderer.materials = new []{ lineMaterial };
 			
 			lineRenderer.widthCurve = lineCurve;
-			
 		}
 
 		void SetupMesh(PrimitiveType meshType, Material material)

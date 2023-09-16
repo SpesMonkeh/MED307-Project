@@ -1,0 +1,38 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/Hands/Editor/Resources/hand_map_element_style_editor.uss?fileID=7433441132597879392&amp;guid=d75004e571c80f940b862b831726a0fe&amp;type=3#hand_map_element_style_editor" />
+    <ui:VisualElement name="HandMapElement">
+        <ui:VisualElement name="LandmarkContainer" style="background-color: rgba(0, 0, 0, 0); flex-direction: row; align-self: stretch; justify-content: space-around; position: absolute; flex-grow: 1; flex-shrink: 0; height: 258px; width: 236px; top: 8px; left: 26px;">
+            <ui:Button name="0_WRIST" text="0" class="landmark__button" style="top: 229px; left: 154px; right: 55px; bottom: 2px;" />
+            <ui:Button text="1" display-tooltip-when-elided="true" name="1_THUMB_CMC" class="landmark__button" style="top: 209px; left: 98px;" />
+            <ui:Button text="2" display-tooltip-when-elided="true" name="2_THUMB_MCP" class="landmark__button" style="top: 192px; left: 72px;" />
+            <ui:Button text="3" display-tooltip-when-elided="true" name="3_THUMB_IP" class="landmark__button" style="top: 178px; left: 45px;" />
+            <ui:Button text="4" display-tooltip-when-elided="true" name="4_THUMB_TIP" class="landmark__button" style="top: 174px; left: 16px;" />
+            <ui:Button text="5" display-tooltip-when-elided="true" name="5_INDEX_MCP" class="landmark__button" style="top: 141px; left: 95px;" />
+            <ui:Button text="6" display-tooltip-when-elided="true" name="6_INDEX_PIP" class="landmark__button" style="top: 113px; left: 76px;" />
+            <ui:Button text="7" display-tooltip-when-elided="true" name="7_INDEX_DIP" class="landmark__button" style="top: 82px; left: 56px;" />
+            <ui:Button text="8" display-tooltip-when-elided="true" name="8_INDEX_TIP" class="landmark__button" style="top: 58px; left: 27px;" />
+            <ui:Button text="9" display-tooltip-when-elided="true" name="9_MIDDLE_MCP" class="landmark__button" style="top: 111px; left: 121px;" />
+            <ui:Button text="10" display-tooltip-when-elided="true" name="10_MIDDLE_PIP" class="landmark__button" style="top: 77px; left: 106px;" />
+            <ui:Button text="11" display-tooltip-when-elided="true" name="11_MIDDLE_DIP" class="landmark__button" style="top: 44px; left: 88px;" />
+            <ui:Button text="12" display-tooltip-when-elided="true" name="12_MIDDLE_TIP" class="landmark__button" style="top: 11px; left: 68px;" />
+            <ui:Button text="13" display-tooltip-when-elided="true" name="13_RING_MCP" class="landmark__button" style="top: 117px; left: 158px;" />
+            <ui:Button text="14" display-tooltip-when-elided="true" name="14_RING_PIP" class="landmark__button" style="top: 84px; left: 157px;" />
+            <ui:Button text="15" display-tooltip-when-elided="true" name="15_RING_DIP" class="landmark__button" style="top: 53px; left: 146px;" />
+            <ui:Button text="16" display-tooltip-when-elided="true" name="16_RING_TIP" class="landmark__button" style="top: 19px; left: 135px;" />
+            <ui:Button text="17" display-tooltip-when-elided="true" name="17_PINKY_MCP" class="landmark__button" style="top: 147px; left: 193px;" />
+            <ui:Button text="18" display-tooltip-when-elided="true" name="18_PINKY_PIP" class="landmark__button" style="top: 118px; left: 199px;" />
+            <ui:Button text="19" display-tooltip-when-elided="true" name="19_PINKY_DIP" class="landmark__button" style="top: 86px; left: 198px;" />
+            <ui:Button text="20" display-tooltip-when-elided="true" name="20_PINKY_TIP" class="landmark__button" style="top: 55px; left: 196px;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="Id_Labels_Container" style="flex-grow: 0; background-color: rgba(0, 0, 0, 0.26); flex-shrink: 0; flex-direction: row; justify-content: space-between; height: 25px; align-items: center; border-top-color: rgb(84, 101, 86); border-top-width: 1px;">
+            <ui:VisualElement name="Index_Labels" class="landmark_id__label" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row;">
+                <ui:Label tabindex="-1" text="Index:" display-tooltip-when-elided="true" name="Index_label" style="height: 25px; margin-right: 0;" />
+                <ui:Label tabindex="-1" text="0" display-tooltip-when-elided="true" name="Index_value" style="height: 25px;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="Tag_Labels" class="landmark_id__label" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; justify-content: flex-end;">
+                <ui:Label tabindex="-1" text="Tag:" display-tooltip-when-elided="true" name="Tag_label" style="height: 25px; margin-right: 0;" />
+                <ui:Label tabindex="-1" text="Wrist" display-tooltip-when-elided="true" name="Tag_value" style="height: 25px;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

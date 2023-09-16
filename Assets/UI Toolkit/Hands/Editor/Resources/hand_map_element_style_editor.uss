@@ -1,0 +1,52 @@
+#HandMapElement {
+    border-color: rgb(84, 101, 86);
+    border-width: 1px;
+    border-radius: 2px;
+    background-color: rgb(42, 42, 42);
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 300px;
+    height: 300px;
+    justify-content: flex-end;
+    align-items: stretch;
+    align-self: center;
+}
+
+.landmark__button {
+    width: 25px;
+    height: 25px;
+    font-size: 14px;
+    color: rgb(255, 255, 255);
+    border-radius: 10px;
+    padding: 1px;
+    margin: 1px;
+    background-color: rgb(233, 0, 0);
+    border-bottom-color: rgb(181, 187, 255);
+    border-left-color: rgb(181, 187, 255);
+    border-right-color: rgb(181, 187, 255);
+    border-top-color: rgb(181, 187, 255);
+    position: absolute;
+    -unity-font-style: bold;
+    text-shadow: 1px 2px 1px rgb(0, 0, 0);
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.landmark_id__label {
+    font-size: 12px;
+    color: rgb(255, 255, 255);
+    -unity-text-align: middle-center;
+}
+
+.landmark__button:hover {
+    border-left-width: 2px;
+    border-right-width: 2px;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+}

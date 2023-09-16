@@ -35,7 +35,6 @@ namespace P307.Runtime.Hands
 			if (landmarkComponents.Count is 0)
 				return;
 			HandUtils.UpdateLandmarkMeshes(landmarkComponents, meshType);
-
 		}
 
 		public HandLandmark GetLandmark(int index)

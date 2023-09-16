@@ -11,8 +11,8 @@ namespace P307.Runtime.Hands
 	public sealed class HandLandmarkLineDrawer : MonoBehaviour
 	{
 		[Header("General Line Settings")]
-		[SerializeField] int lineCornerVertices = 2;
-		[SerializeField] int  lineEndVertices = 1;
+		[SerializeField, Range(ZERO, 5)] int lineCornerVertices = 2;
+		[SerializeField, Range(ZERO, 5)] int  lineEndVertices = 1;
 		
 		[Space(5), Header("Components")]
 		[SerializeField] LineRenderer palmLine;

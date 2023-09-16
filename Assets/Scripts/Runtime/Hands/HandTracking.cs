@@ -11,12 +11,20 @@ namespace P307.Runtime.Hands
 	[DisallowMultipleComponent]
 	public sealed class HandTracking : MonoBehaviour
 	{
-		[SerializeField] bool lerpMovement;
 		[SerializeField] Hand hand;
 		[SerializeField] UDPReceive udpReceive;
 		[SerializeField] List<HandLandmark> landmarks = new();
 		
+		[Space(5), Header("Movement")]
+		[SerializeField] bool lerpMovement;
 		[SerializeField, Range(1f, 10f)] float landmarkLerpTime = 8f;
+
+		[Space(5), Header("Positioning")]
+		[SerializeField, Range(-10f, 10f)] float xCorrection = -5f;
+		[SerializeField, Range(-10f, 10f)] float yCorrection;
+		[SerializeField, Range(-10f, 10f)] float zCorrection;
+		
+		Camera mainCam;
 		
 		HandLandmark wristLandmark;
 		HandLandmark thumbStart;
@@ -49,9 +57,13 @@ namespace P307.Runtime.Hands
 			new(7.61f, 7.42f, -1.57f),
 			new(7.49f, 7.83f, -1.69f)
 		};
+
+		int screenWidth;
+		int screenHeight;
 		
 		void Awake()
 		{
+			mainCam = Camera.main;
 			hand = FindFirstObjectByType<Hand>(FindObjectsInactive.Include);
 			udpReceive = FindFirstObjectByType<UDPReceive>(FindObjectsInactive.Include);
 		}
@@ -69,12 +81,18 @@ namespace P307.Runtime.Hands
 			ringStart = landmarks[13];
 			pinkyStart = landmarks[17];
 		}
+		
 
-		static Vector3 TranslateDataToCoordinates(int index, IReadOnlyList<string> coordsData)
+		Vector3 TranslateDataToCoordinates(int index, IReadOnlyList<string> coordsData)
 		{
-			float x = float.Parse(coordsData[index * 3]) / 100;
-			float y = float.Parse(coordsData[index * 3 + 1]) / 100;
-			float z = float.Parse(coordsData[index * 3 + 2]) / 100;
+			const int one = 1;
+			const int two = 2;
+			const int three = 3;
+			const float one_percent = .01f;
+			
+			float x = float.Parse(coordsData[index * three]) * one_percent + xCorrection;
+			float y = float.Parse(coordsData[index * three + one]) * one_percent + yCorrection;
+			float z = float.Parse(coordsData[index * three + two]) * one_percent + zCorrection;
 			return new Vector3(x, y, z);
 		}
 
@@ -124,7 +142,7 @@ namespace P307.Runtime.Hands
 		{
 			Vector3 currentPos = landmarks[i].transform.localPosition;
 			landmarks[i].transform.localPosition = lerpMovement
-				? Vector3.Lerp(currentPos, newPos, Time.deltaTime /* * landmarkLerpTime*/)
+				? Vector3.Lerp(currentPos, newPos, Time.deltaTime * landmarkLerpTime)
 				: newPos;
 			
 			HandLandmarkStateHandler.UpdateHand(landmarks);

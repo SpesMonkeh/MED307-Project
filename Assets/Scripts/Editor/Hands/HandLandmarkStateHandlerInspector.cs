@@ -52,6 +52,7 @@ namespace P307Editor.Hands
 		Material LineMaterial => lineMaterial ??= Resources.Load<Material>(HAND_GREEN_MATERIAL_PATH);
 		HandLandmark LandmarkPrefab => landmarkPrefab ??= Resources.Load<HandLandmark>(HAND_LANDMARK_PREFAB_PATH);
 		
+		
 		public override VisualElement CreateInspectorGUI()
 		{
 			targetStateHandler = (HandLandmarkStateHandler)target;
@@ -192,12 +193,22 @@ namespace P307Editor.Hands
 		{
 			if (@event.target is not Button button)
 				return;
-			
-			const int start_index = 2;
-			const int first_substring_length = 1;
-			string index = button.name[..first_substring_length];
+
+			const char separator = '_';
+			const int second_index = 1;
+			const int third_index = 2;
+			const int fourth_index = 3;
+			const int single_char_substring = 1;
+			const int double_char_substring = 2;
+
+			int start_index = button.name[second_index] is separator
+				? third_index
+				: fourth_index;
+			string index = button.name[second_index] is separator
+				? button.name[..single_char_substring]
+				: button.name[..double_char_substring];
 			string tag = button.name[start_index..];
-			
+
 			SetMapValueLabels(index, tag);
 		}
 		
@@ -230,6 +241,8 @@ namespace P307Editor.Hands
 
 		void OnDisable()
 		{
+			if (landmarkMapContainer is null)
+				return;
 			IEnumerable<VisualElement> children = landmarkMapContainer.Q(LANDMARK_CONTAINER).Children();
 			foreach (VisualElement child in children)
 			{

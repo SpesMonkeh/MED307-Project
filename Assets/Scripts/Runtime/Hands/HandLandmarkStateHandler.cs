@@ -40,7 +40,6 @@ namespace P307.Runtime.Hands
 		public HandLandmark GetLandmark(int index)
 		{
 			index = Mathf.Abs(Mathf.Clamp(index, 0, landmarkComponents.Count - 1));
-			//Debug.Log(landmarkComponents[index].name + "  " + index);
 			return landmarkComponents[index];
 		}
 		

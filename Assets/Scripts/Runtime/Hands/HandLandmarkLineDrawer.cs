@@ -8,6 +8,7 @@ using static P307.Runtime.Hands.HandUtils;
 
 namespace P307.Runtime.Hands
 {
+	[AddComponentMenu("307/Hands/Line Drawer")]
 	public sealed class HandLandmarkLineDrawer : MonoBehaviour
 	{
 		[Header("General Line Settings")]
@@ -21,21 +22,21 @@ namespace P307.Runtime.Hands
 		[SerializeField] LineRenderer middleFingerLine;
 		[SerializeField] LineRenderer ringFingerLine;
 		[SerializeField] LineRenderer pinkyLine;
-		[SerializeField] HandLandmarkStateHandler landmarkStateHandler;
+		[SerializeField] HandLandmarkPositionController landmarkPositionController;
 
 		const int ZERO = 0;
 		
 		void Awake()
 		{
-			landmarkStateHandler = transform.parent.GetComponentInChildren<HandLandmarkStateHandler>();
+			landmarkPositionController = transform.parent.GetComponentInChildren<HandLandmarkPositionController>();
 			
-			SetLineValues();
-			PalmUpdate();
-			ThumbUpdate();
-			IndexFingerUpdate();
-			MiddleFingerUpdate();
-			RingFingerUpdate();
-			PinkyUpdate();
+			//SetLineValues();
+			//PalmUpdate();
+			//ThumbUpdate();
+			//IndexFingerUpdate();
+			//MiddleFingerUpdate();
+			//RingFingerUpdate();
+			//PinkyUpdate();
 		}
 
 		void SetLineValues()
@@ -77,20 +78,20 @@ namespace P307.Runtime.Hands
 			pinkyLine.positionCount = PinkyIndices.Length;
 		}
 
-		void Update()
-		{
-			PalmUpdate();
-			ThumbUpdate();
-			IndexFingerUpdate();
-			MiddleFingerUpdate();
-			RingFingerUpdate();
-			PinkyUpdate();
-		}
+		//void Update()
+		//{
+		//	PalmUpdate();
+		//	ThumbUpdate();
+		//	IndexFingerUpdate();
+		//	MiddleFingerUpdate();
+		//	RingFingerUpdate();
+		//	PinkyUpdate();
+		//}
 		
 		void UpdateFinger(ref LineRenderer line, IReadOnlyList<int> landmarkIndices)
 		{
-			if (landmarkStateHandler == null)
-				throw new NullReferenceException($"Tried to update line positions for {line.name}, but {nameof(HandLandmarkStateHandler)} was null!");
+			if (landmarkPositionController == null)
+				throw new NullReferenceException($"Tried to update line positions for {line.name}, but {nameof(HandLandmarkPositionController)} was null!");
 			if (line == null)
 				throw new NullReferenceException($"Tried to update line positions for {nameof(LineRenderer)}, but it was null!");
 			
@@ -99,7 +100,7 @@ namespace P307.Runtime.Hands
 				if (i >= landmarkIndices.Count)
 					break;
 				
-				Vector3 connectionPos = landmarkStateHandler.GetLandmark(landmarkIndices[i]).transform.localPosition;
+				Vector3 connectionPos = landmarkPositionController.GetLandmark(landmarkIndices[i]).transform.localPosition;
 				line.SetPosition(i, connectionPos);
 			}
 		}

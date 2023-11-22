@@ -3,6 +3,7 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+using static P307.Shared.Const307;
 using Object = UnityEngine.Object;
 
 namespace P307.Runtime.Hands
@@ -54,18 +55,29 @@ namespace P307.Runtime.Hands
 			PIP = "_PIP",
 			TIP = "_TIP";
 
+		public static readonly int[] PalmLineIndices =
+		{
+			WRIST_INDEX,
+			PINKY_MCP_INDEX,
+			RING_FINGER_MCP_INDEX,
+			MIDDLE_FINGER_MCP_INDEX,
+			INDEX_FINGER_MCP_INDEX,
+			WRIST_INDEX,
+			THUMB_CMC_INDEX
+		};
+
 		public static readonly int[] PalmIndices =
 		{
 			WRIST_INDEX,
+			THUMB_CMC_INDEX,
 			INDEX_FINGER_MCP_INDEX,
 			MIDDLE_FINGER_MCP_INDEX,
 			RING_FINGER_MCP_INDEX,
-			PINKY_MCP_INDEX
+			PINKY_MCP_INDEX,
 		};
 
 		public static readonly int[] ThumbIndices =
 		{
-			WRIST_INDEX,
 			THUMB_CMC_INDEX,
 			THUMB_MCP_INDEX,
 			THUMB_IP_INDEX,
@@ -104,39 +116,52 @@ namespace P307.Runtime.Hands
 			PINKY_TIP_INDEX
 		};
 		
-		public static Dictionary<int, string> LandmarkTags { get; } = new()
+		public static Dictionary<int, int[]> IndexDict { get; }= new()
+		{
+			{ ZERO,			PalmIndices }			,
+			{ ONE,			ThumbIndices }			,
+			{ FIVE,			IndexFingerIndices }	,
+			{ NINE,			MiddleFingerIndices }	,
+			{ THIRTEEN,		RingFingerIndices }		,
+			{ SEVENTEEN,	PinkyIndices }
+		};
+		
+		public static Dictionary<int, string> LandmarkTagsOfIndex { get; } = new()
 		{
 			// 0
-			{ WRIST_INDEX,				WRIST },
+			{ WRIST_INDEX,				WRIST }					,
 			// 1 - 4
-			{ THUMB_CMC_INDEX,			THUMB + CMC },
-			{ THUMB_MCP_INDEX,			THUMB + MCP },
-			{ THUMB_IP_INDEX,			THUMB + IP },
-			{ THUMB_TIP_INDEX,			THUMB + TIP },
+			{ THUMB_CMC_INDEX,			THUMB + CMC }			,
+			{ THUMB_MCP_INDEX,			THUMB + MCP }			,
+			{ THUMB_IP_INDEX,			THUMB + IP }			,			
+			{ THUMB_TIP_INDEX,			THUMB + TIP }			,
 			// 5 - 8
-			{ INDEX_FINGER_MCP_INDEX,	INDEX_FINGER + MCP },
-			{ INDEX_FINGER_PIP_INDEX,	INDEX_FINGER + PIP },
-			{ INDEX_FINGER_DIP_INDEX,	INDEX_FINGER + DIP },
-			{ INDEX_FINGER_TIP_INDEX,	INDEX_FINGER + TIP },
+			{ INDEX_FINGER_MCP_INDEX,	INDEX_FINGER + MCP }	,
+			{ INDEX_FINGER_PIP_INDEX,	INDEX_FINGER + PIP }	,
+			{ INDEX_FINGER_DIP_INDEX,	INDEX_FINGER + DIP }	,
+			{ INDEX_FINGER_TIP_INDEX,	INDEX_FINGER + TIP }	,
 			// 9 - 12
-			{ MIDDLE_FINGER_MCP_INDEX,	MIDDLE_FINGER + MCP },
-			{ MIDDLE_FINGER_PIP_INDEX,	MIDDLE_FINGER + PIP },
-			{ MIDDLE_FINGER_DIP_INDEX,	MIDDLE_FINGER + DIP },
-			{ MIDDLE_FINGER_TIP_INDEX,	MIDDLE_FINGER + TIP },
+			{ MIDDLE_FINGER_MCP_INDEX,	MIDDLE_FINGER + MCP }	,
+			{ MIDDLE_FINGER_PIP_INDEX,	MIDDLE_FINGER + PIP }	,
+			{ MIDDLE_FINGER_DIP_INDEX,	MIDDLE_FINGER + DIP }	,
+			{ MIDDLE_FINGER_TIP_INDEX,	MIDDLE_FINGER + TIP }	,
 			// 13 - 16
-			{ RING_FINGER_MCP_INDEX,	RING_FINGER + MCP },
-			{ RING_FINGER_PIP_INDEX,	RING_FINGER + PIP },
-			{ RING_FINGER_DIP_INDEX,	RING_FINGER + DIP },
-			{ RING_FINGER_TIP_INDEX,	RING_FINGER + TIP },
+			{ RING_FINGER_MCP_INDEX,	RING_FINGER + MCP }		,
+			{ RING_FINGER_PIP_INDEX,	RING_FINGER + PIP }		,
+			{ RING_FINGER_DIP_INDEX,	RING_FINGER + DIP }		,
+			{ RING_FINGER_TIP_INDEX,	RING_FINGER + TIP }		,
 			// 17 - 20
-			{ PINKY_MCP_INDEX,			PINKY + MCP },
-			{ PINKY_PIP_INDEX,			PINKY + PIP },
-			{ PINKY_DIP_INDEX,			PINKY + DIP },
-			{ PINKY_TIP_INDEX,			PINKY + TIP },
+			{ PINKY_MCP_INDEX,			PINKY + MCP }			,
+			{ PINKY_PIP_INDEX,			PINKY + PIP }			,
+			{ PINKY_DIP_INDEX,			PINKY + DIP }			,
+			{ PINKY_TIP_INDEX,			PINKY + TIP }			,
 		};
 
-		public static Dictionary<int, int[]> ConnectionsToIndex { get; } = new()
+		public static Dictionary<int, int[]> LineConnectionIndicesOfIndex { get; } = new()
 		{
+			// int = index
+			// int[] = line connection indices
+			
 			// WRIST
 			{ 0, new[] { 1, 5, 7 } },
 
@@ -171,35 +196,16 @@ namespace P307.Runtime.Hands
 			{ 20, new[] { 19 } }
 		};
 		
-		
-		
 		public static Mesh GetLandmarkMesh(PrimitiveType primitiveType)
 		{
 			var go = GameObject.CreatePrimitive(primitiveType);
 			var mesh = go.GetComponent<MeshFilter>().sharedMesh;
-			
 #if UNITY_EDITOR
-
 			Object.DestroyImmediate(go);
 #else
 			Object.Destroy(go);
 #endif
-			
 			return mesh;
-		}
-		
-		public static HandLandmark[] LandmarkMeshes()
-		{
-			HandLandmark[] landmarks = Resources.LoadAll<HandLandmark>("Meshes/Primitives");
-			return landmarks;
-		}
-
-		public static void UpdateLandmarkMeshes(List<HandLandmark> landmarks, PrimitiveType primitiveType)
-		{
-			foreach (var landmark in landmarks)
-			{
-				landmark.PrimitiveType = primitiveType;
-			}
 		}
 	}
 }

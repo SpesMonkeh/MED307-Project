@@ -318,7 +318,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  primitiveType: 0
+  useCoordinateColor: 1
 --- !u!33 &6593133433357519676
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -662,7 +662,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  primitiveType: 0
+  useCoordinateColor: 1
 --- !u!33 &4122692297081370100
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1005,7 +1005,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  primitiveType: 0
+  useCoordinateColor: 1
 --- !u!33 &7206528494359334084
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1350,7 +1350,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  primitiveType: 0
+  useCoordinateColor: 1
 --- !u!33 &6003172867767426960
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -3048,7 +3048,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  primitiveType: 0
+  useCoordinateColor: 1
 --- !u!33 &1394552004612704862
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -3498,7 +3498,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  primitiveType: 0
+  useCoordinateColor: 1
 --- !u!33 &924635265920532782
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -4231,6 +4231,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d093ef28ea3459182aee065835e3d2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  handLandmarks: []
+  pointAnnotations: []
   landmarkComponents:
   - {fileID: 8600612976222761377}
   - {fileID: 1522147757043396095}
@@ -4319,7 +4321,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  primitiveType: 0
+  useCoordinateColor: 1
 --- !u!33 &3515092472957959218
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -6528,7 +6530,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  primitiveType: 0
+  useCoordinateColor: 1
 --- !u!33 &3082006436451429736
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -7125,7 +7127,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  primitiveType: 0
+  useCoordinateColor: 1
 --- !u!33 &4401487576902421643
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -7722,7 +7724,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  primitiveType: 0
+  useCoordinateColor: 1
 --- !u!33 &6675658505967925734
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -8797,7 +8799,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  primitiveType: 0
+  useCoordinateColor: 1
 --- !u!33 &1329074024123257156
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -9381,7 +9383,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  primitiveType: 0
+  useCoordinateColor: 1
 --- !u!33 &3152678566175854601
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -9724,7 +9726,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  primitiveType: 0
+  useCoordinateColor: 1
 --- !u!33 &9160355509209443561
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -10521,7 +10523,7 @@ MonoBehaviour:
   middleFingerLine: {fileID: 7885210179239710731}
   ringFingerLine: {fileID: 5253831810955684807}
   pinkyLine: {fileID: 3702394299621913936}
-  landmarkStateHandler: {fileID: 4317645771841048652}
+  landmarkPositionController: {fileID: 0}
 --- !u!1 &5128615607339124984
 GameObject:
   m_ObjectHideFlags: 0
@@ -10809,7 +10811,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  primitiveType: 0
+  useCoordinateColor: 1
 --- !u!33 &826713934166226796
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -12847,7 +12849,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  primitiveType: 0
+  useCoordinateColor: 1
 --- !u!33 &426856073724756850
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -13381,7 +13383,7 @@ Transform:
   - {fileID: 5661671007442488537}
   - {fileID: 3955585249391248660}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3119050460420930717
 MonoBehaviour:
@@ -13398,29 +13400,8 @@ MonoBehaviour:
   handLandmarkPrefab: {fileID: 5660834911973438848, guid: 0cf7bfa3074a4bf49874c0c58748387c,
     type: 3}
   landmarkContainer: {fileID: 2204263131497513183}
-  landmarks:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   landmarkPrimitive: 0
+  landmarkData: []
 --- !u!1 &7177574651662866428
 GameObject:
   m_ObjectHideFlags: 0
@@ -13485,7 +13466,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  primitiveType: 0
+  useCoordinateColor: 1
 --- !u!33 &4058646771356160005
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -13829,7 +13810,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  primitiveType: 0
+  useCoordinateColor: 1
 --- !u!33 &1857506937362988329
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -14916,7 +14897,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  primitiveType: 0
+  useCoordinateColor: 1
 --- !u!33 &9116122942437507753
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -15500,7 +15481,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  primitiveType: 0
+  useCoordinateColor: 1
 --- !u!33 &4079907813465543505
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -16907,7 +16888,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  primitiveType: 0
+  useCoordinateColor: 1
 --- !u!33 &9103096825638931497
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -17370,7 +17351,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  primitiveType: 0
+  useCoordinateColor: 1
 --- !u!33 &4496632586273219798
 MeshFilter:
   m_ObjectHideFlags: 0

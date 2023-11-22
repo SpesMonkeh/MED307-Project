@@ -3,82 +3,44 @@
 
 using System;
 using UnityEngine;
+using static P307.Runtime.Hands.HandUtils;
+using static P307.Shared.Const307;
 
 namespace P307.Runtime.Hands.ScriptableObjects
 {
-	[CreateAssetMenu(fileName = "new HandLandmarkSO", menuName = "P307/Hand/Landmark")]
+	[CreateAssetMenu(fileName = "new HandLandmarkSO", menuName = "307/Hands/Landmark")]
 	public class HandLandmarkSO : ScriptableObject
 	{
-		[SerializeField] int meshScaleFactor = 1;
+		[Header("Colors and Materials")]
+		[SerializeField] Color pointLightColor = Color.cyan;
+		[SerializeField] Color lineStartColor = Color.blue;
+		[SerializeField] Color lineEndColor = Color.black;
+		[SerializeField] Color meshColor = Color.cyan;
+		[SerializeField] Material lineMaterial;
+		[SerializeField] Material meshMaterial;
 		
-		[SerializeField] int id;
+		[Space(5), Header("Identification and Relations")]
+		[SerializeField] int index;
 		[SerializeField] string tag;
 		[SerializeField] int[] connections = {};
-
-		[SerializeField] Vector3 startPosition;
 		
-		[NonSerialized] HandLandmark landmark;
-		[NonSerialized] Vector3 currentPosition;
-
 		[NonSerialized] Vector3 meshLocalScale = new(.25f, .25f, .25f);
 
-		public Action<Vector3> moveToStartPosition = delegate {  };
-		public Action<Vector3> updatePosition = delegate {  };
-
-		public int Id => id;
 		public string Tag => tag;
-		public int[] Connections => connections;
-		public Vector3 MeshLocalScale { get => meshLocalScale; set => meshLocalScale = value; }
 
-		public Vector3 StartPosition
+		public void Init(int lmIndex, string lmTag, int[] connectedIndices)
 		{
-			get => startPosition;
-			set
-			{
-				if (startPosition == value)
-					return;
-				startPosition = value;
-				moveToStartPosition?.Invoke(startPosition);
-				moveToStartPosition -= landmark.UpdatePosition;
-				updatePosition += landmark.UpdatePosition;
-			}
-		}
-
-		public Vector3 CurrentPosition
-		{
-			get => currentPosition;
-			set
-			{
-				if (currentPosition == value)
-					return;
-				currentPosition = value;
-				updatePosition?.Invoke(currentPosition);
-			}
-		}
-
-		public void Init(int lmIndex, string lmTag, int[] connectedIndices, HandLandmark lm)
-		{
-			id = lmIndex;
+			index = lmIndex;
 			tag = lmTag;
-			connections = HandUtils.ConnectionsToIndex[lmIndex];
-			landmark = lm;
-			updatePosition -= landmark.UpdatePosition;
-			moveToStartPosition += landmark.UpdatePosition;
+			connections = LineConnectionIndicesOfIndex[lmIndex];
 		}
 
-		public void UpdateLandmarkPosition(Vector3 position)
+		public static HandLandmarkSO Create(int index)
 		{
-			// TODO S/LERP
-			CurrentPosition = position;
-		}
-
-		public void MoveToStartPosition() => UpdateLandmarkPosition(StartPosition);
-
-		public static HandLandmarkSO Create(int index, string tag, HandLandmark lm)
-		{
-			var lmSO = CreateInstance<HandLandmarkSO>();
-			lmSO.Init(index, tag, HandUtils.ConnectionsToIndex[index], lm);
-			return lmSO;
+			index = Mathf.Clamp(value: index, min: ZERO, max: HAND_LANDMARK_INDICES);
+			HandLandmarkSO so = CreateInstance<HandLandmarkSO>();
+			so.Init(index, LandmarkTagsOfIndex[index], LineConnectionIndicesOfIndex[index]);
+			return so;
 		}
 	}
 }

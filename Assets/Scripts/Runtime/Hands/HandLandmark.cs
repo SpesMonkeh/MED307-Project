@@ -1,12 +1,11 @@
-﻿// Copyright © Christian Holm Christensen
-// 10/09/2023
-
-using P307.Runtime.Hands.ScriptableObjects;
+﻿using P307.Runtime.Hands.ScriptableObjects;
 using UnityEngine;
+using static P307.Runtime.Hands.HandUtils;
+using static P307.Shared.Const307;
 
 namespace P307.Runtime.Hands
 {
-	[DisallowMultipleComponent][RequireComponent(typeof(LineRenderer))]
+	[DisallowMultipleComponent] [RequireComponent(typeof(LineRenderer))] [AddComponentMenu("307/Hands/Landmark", order: ZERO)]
 	public sealed class HandLandmark : MonoBehaviour
 	{
 		[SerializeField] int index;
@@ -15,58 +14,62 @@ namespace P307.Runtime.Hands
 		[SerializeField] MeshRenderer meshRenderer;
 		[SerializeField] LineRenderer lineRenderer;
 		[SerializeField] HandLandmarkSO data;
-		[SerializeField, Range(0f, 1f)] AnimationCurve lineCurve = new();
-		[SerializeField] PrimitiveType primitiveType = PrimitiveType.Sphere;
-		
-		public Vector3 WorldPosition => transform.position;
+		[SerializeField, Range(ZERO, ONE)] AnimationCurve lineCurve = new();
+
+		[Space(14), Header("Experimental shite")]
+		[SerializeField] bool useCoordinateColor = true;
+
+		public int Index => index;
 		public LineRenderer LineRenderer => lineRenderer = GetComponent<LineRenderer>();
-		public MeshRenderer MeshRenderer => meshRenderer ??= GetComponentInChildren<MeshRenderer>();
-		public MeshFilter MeshFilter => meshFilter ??= GetComponentInChildren<MeshFilter>();
+		public MeshFilter MeshFilter => meshFilter ??= GetComponent<MeshFilter>();
+		public MeshRenderer MeshRenderer => meshRenderer ??= GetComponent<MeshRenderer>();
 		public HandLandmarkSO Data { get => data; set => data = value; }
-		public PrimitiveType PrimitiveType { get => primitiveType; set => primitiveType = value; }
+		public PrimitiveType PrimitiveType => HandLandmarkSettingsSO.getMeshPrimitiveSetting?.Invoke() ?? PrimitiveType.Sphere;
+
+		static Material MeshMaterial => HandLandmarkSettingsSO.getMeshMaterial?.Invoke();
+		static Material LineMaterial => HandLandmarkSettingsSO.getLineMaterial?.Invoke();
 		
-		public void Init(int i, PrimitiveType meshType, Material lmMaterial, Material lineMaterial)
+		public void Init(int i)
 		{
 			index = i;
-			landmarkTag = HandUtils.LandmarkTags[i];
-			
-			name = $"{i}. {landmarkTag}";
-			data = HandLandmarkSO.Create(i, landmarkTag, this);
+			landmarkTag = LandmarkTagsOfIndex[i];
 
-			SetupMesh(primitiveType, lmMaterial);
+			name = $"{i}. {landmarkTag}";
+
+			SetupMesh(MeshMaterial);
 
 			lineRenderer = GetComponent<LineRenderer>();
-			lineRenderer.positionCount = HandUtils.ConnectionsToIndex[i].Length;
-			lineRenderer.SetPosition(0, transform.position);
-			
-			lineRenderer.materials = new []{ lineMaterial };
-			
+			lineRenderer.positionCount = LineConnectionIndicesOfIndex[i].Length;
+			lineRenderer.SetPosition(ZERO, transform.position);
+			lineRenderer.materials = new[] { LineMaterial };
 			lineRenderer.widthCurve = lineCurve;
 		}
 
-		void SetupMesh(PrimitiveType meshType, Material material)
+		public void UpdateColorBasedOnCoordinates()
 		{
-			GameObject meshGO = GameObject.CreatePrimitive(meshType);
-			meshGO.transform.SetParent(transform);
-			meshGO.name = "mesh";
-			meshGO.transform.localScale = new Vector3(.5f, .5f, .5f);
-			
-			meshRenderer = meshGO.GetComponent<MeshRenderer>();
-			meshFilter = meshGO.GetComponent<MeshFilter>();
-			meshFilter.mesh = HandUtils.GetLandmarkMesh(meshType);
-			meshRenderer.materials = new[] { material };
+			if (useCoordinateColor is false)
+				return;
+			Vector3 position = transform.position;
+			meshRenderer.material.color = new Color(
+				r: Mathf.InverseLerp(-ONE_HUNDRED, TEN * FIVE, position.x),
+				g: Mathf.InverseLerp(-ONE_HUNDRED, TEN * FIVE, position.y),
+				b: Mathf.InverseLerp(-ONE_HUNDRED, TEN * FIVE, position.z));
 		}
 
-		public void UpdatePosition(Vector3 newPos)
+		void FixedUpdate()
 		{
-			transform.position = newPos;
-			lineRenderer.SetPosition(0, newPos);
+			UpdateColorBasedOnCoordinates();
 		}
-		
-		public void UpdateMesh(PrimitiveType primitive)
+
+		void SetupMesh(Material material)
 		{
-			Mesh mesh = HandUtils.GetLandmarkMesh(primitive);
-			meshFilter.mesh = mesh;
+			transform.localScale = Vector3.one + (HandLandmarkSettingsSO.getMeshScaleSetting?.Invoke() ?? Vector3.one);
+
+			meshFilter = GetComponent<MeshFilter>();
+			meshFilter.mesh = GetLandmarkMesh(PrimitiveType);
+
+			meshRenderer = GetComponent<MeshRenderer>();
+			meshRenderer.materials = new[] { material };
 		}
 	}
 }

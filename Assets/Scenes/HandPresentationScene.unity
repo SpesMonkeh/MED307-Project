@@ -135,6 +135,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshScaleFactor: 1
+  pointLightColor: {r: 0, g: 1, b: 1, a: 1}
+  lineStartColor: {r: 0, g: 0, b: 1, a: 1}
+  lineEndColor: {r: 0, g: 0, b: 0, a: 1}
+  meshColor: {r: 0, g: 1, b: 1, a: 1}
+  lineMaterial: {fileID: 0}
+  meshMaterial: {fileID: 0}
   id: 3
   tag: THUMB_IP
   connections: 0200000004000000
@@ -152,10 +158,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshScaleFactor: 1
+  pointLightColor: {r: 0, g: 1, b: 1, a: 1}
+  lineStartColor: {r: 0, g: 0, b: 1, a: 1}
+  lineEndColor: {r: 0, g: 0, b: 0, a: 1}
+  meshColor: {r: 0, g: 1, b: 1, a: 1}
+  lineMaterial: {fileID: 0}
+  meshMaterial: {fileID: 0}
   id: 2
   tag: THUMB_MCP
   connections: 0100000003000000
   startPosition: {x: 0, y: 0, z: 0}
+--- !u!1 &239579840 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7043785182956594221, guid: 75164ed09e71f09459c13f28417addf3,
+    type: 3}
+  m_PrefabInstance: {fileID: 1735440219}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &300724528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,6 +187,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshScaleFactor: 1
+  pointLightColor: {r: 0, g: 1, b: 1, a: 1}
+  lineStartColor: {r: 0, g: 0, b: 1, a: 1}
+  lineEndColor: {r: 0, g: 0, b: 0, a: 1}
+  meshColor: {r: 0, g: 1, b: 1, a: 1}
+  lineMaterial: {fileID: 0}
+  meshMaterial: {fileID: 0}
   id: 1
   tag: THUMB_CMC
   connections: 0000000002000000
@@ -335,6 +359,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshScaleFactor: 1
+  pointLightColor: {r: 0, g: 1, b: 1, a: 1}
+  lineStartColor: {r: 0, g: 0, b: 1, a: 1}
+  lineEndColor: {r: 0, g: 0, b: 0, a: 1}
+  meshColor: {r: 0, g: 1, b: 1, a: 1}
+  lineMaterial: {fileID: 0}
+  meshMaterial: {fileID: 0}
   id: 13
   tag: RING_FINGER_MCP
   connections: 090000000e00000011000000
@@ -482,6 +512,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshScaleFactor: 1
+  pointLightColor: {r: 0, g: 1, b: 1, a: 1}
+  lineStartColor: {r: 0, g: 0, b: 1, a: 1}
+  lineEndColor: {r: 0, g: 0, b: 0, a: 1}
+  meshColor: {r: 0, g: 1, b: 1, a: 1}
+  lineMaterial: {fileID: 0}
+  meshMaterial: {fileID: 0}
   id: 9
   tag: MIDDLE_FINGER_MCP
   connections: 050000000a0000000d000000
@@ -511,6 +547,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshScaleFactor: 1
+  pointLightColor: {r: 0, g: 1, b: 1, a: 1}
+  lineStartColor: {r: 0, g: 0, b: 1, a: 1}
+  lineEndColor: {r: 0, g: 0, b: 0, a: 1}
+  meshColor: {r: 0, g: 1, b: 1, a: 1}
+  lineMaterial: {fileID: 0}
+  meshMaterial: {fileID: 0}
   id: 6
   tag: INDEX_FINGER_PIP
   connections: 0500000007000000
@@ -540,6 +582,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshScaleFactor: 1
+  pointLightColor: {r: 0, g: 1, b: 1, a: 1}
+  lineStartColor: {r: 0, g: 0, b: 1, a: 1}
+  lineEndColor: {r: 0, g: 0, b: 0, a: 1}
+  meshColor: {r: 0, g: 1, b: 1, a: 1}
+  lineMaterial: {fileID: 0}
+  meshMaterial: {fileID: 0}
   id: 7
   tag: INDEX_FINGER_DIP
   connections: 0600000008000000
@@ -557,6 +605,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshScaleFactor: 1
+  pointLightColor: {r: 0, g: 1, b: 1, a: 1}
+  lineStartColor: {r: 0, g: 0, b: 1, a: 1}
+  lineEndColor: {r: 0, g: 0, b: 0, a: 1}
+  meshColor: {r: 0, g: 1, b: 1, a: 1}
+  lineMaterial: {fileID: 0}
+  meshMaterial: {fileID: 0}
   id: 4
   tag: THUMB_TIP
   connections: 03000000
@@ -591,7 +645,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 1735440219}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 239579840}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bdae6a97fac541618365c094e9c66704, type: 3}
@@ -603,6 +657,45 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1735440219}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &619605662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 239579840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3f533a3b3fececba86462b46ff711ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  annotation: {fileID: 635997819}
+  _visualizeZ: 0
+--- !u!1 &635997816 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2204263131497513183, guid: 75164ed09e71f09459c13f28417addf3,
+    type: 3}
+  m_PrefabInstance: {fileID: 1735440219}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &635997819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 635997816}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ba3c50c2cb46dc9e916dd3a33c8a488, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _annotationPrefab: {fileID: 4724242833946851653, guid: b420c3106bd9cc5b6871a7df5459dba0,
+    type: 3}
+  _leftLandmarkColor: {r: 0, g: 1, b: 0, a: 1}
+  _rightLandmarkColor: {r: 0, g: 1, b: 0, a: 1}
+  _landmarkRadius: 15
+  _connectionColor: {r: 1, g: 1, b: 1, a: 1}
+  _connectionWidth: 1
 --- !u!114 &699279245 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1522147757043396095, guid: 75164ed09e71f09459c13f28417addf3,
@@ -628,6 +721,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshScaleFactor: 1
+  pointLightColor: {r: 0, g: 1, b: 1, a: 1}
+  lineStartColor: {r: 0, g: 0, b: 1, a: 1}
+  lineEndColor: {r: 0, g: 0, b: 0, a: 1}
+  meshColor: {r: 0, g: 1, b: 1, a: 1}
+  lineMaterial: {fileID: 0}
+  meshMaterial: {fileID: 0}
   id: 0
   tag: WRIST
   connections: 010000000500000007000000
@@ -657,6 +756,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshScaleFactor: 1
+  pointLightColor: {r: 0, g: 1, b: 1, a: 1}
+  lineStartColor: {r: 0, g: 0, b: 1, a: 1}
+  lineEndColor: {r: 0, g: 0, b: 0, a: 1}
+  meshColor: {r: 0, g: 1, b: 1, a: 1}
+  lineMaterial: {fileID: 0}
+  meshMaterial: {fileID: 0}
   id: 15
   tag: RING_FINGER_DIP
   connections: 0e00000010000000
@@ -723,6 +828,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshScaleFactor: 1
+  pointLightColor: {r: 0, g: 1, b: 1, a: 1}
+  lineStartColor: {r: 0, g: 0, b: 1, a: 1}
+  lineEndColor: {r: 0, g: 0, b: 0, a: 1}
+  meshColor: {r: 0, g: 1, b: 1, a: 1}
+  lineMaterial: {fileID: 0}
+  meshMaterial: {fileID: 0}
   id: 11
   tag: MIDDLE_FINGER_DIP
   connections: 0a0000000c000000
@@ -752,6 +863,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshScaleFactor: 1
+  pointLightColor: {r: 0, g: 1, b: 1, a: 1}
+  lineStartColor: {r: 0, g: 0, b: 1, a: 1}
+  lineEndColor: {r: 0, g: 0, b: 0, a: 1}
+  meshColor: {r: 0, g: 1, b: 1, a: 1}
+  lineMaterial: {fileID: 0}
+  meshMaterial: {fileID: 0}
   id: 14
   tag: RING_FINGER_PIP
   connections: 0d0000000f000000
@@ -805,6 +922,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshScaleFactor: 1
+  pointLightColor: {r: 0, g: 1, b: 1, a: 1}
+  lineStartColor: {r: 0, g: 0, b: 1, a: 1}
+  lineEndColor: {r: 0, g: 0, b: 0, a: 1}
+  meshColor: {r: 0, g: 1, b: 1, a: 1}
+  lineMaterial: {fileID: 0}
+  meshMaterial: {fileID: 0}
   id: 12
   tag: MIDDLE_FINGER_TIP
   connections: 0b000000
@@ -858,6 +981,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshScaleFactor: 1
+  pointLightColor: {r: 0, g: 1, b: 1, a: 1}
+  lineStartColor: {r: 0, g: 0, b: 1, a: 1}
+  lineEndColor: {r: 0, g: 0, b: 0, a: 1}
+  meshColor: {r: 0, g: 1, b: 1, a: 1}
+  lineMaterial: {fileID: 0}
+  meshMaterial: {fileID: 0}
   id: 16
   tag: RING_FINGER_TIP
   connections: 0f000000
@@ -875,6 +1004,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshScaleFactor: 1
+  pointLightColor: {r: 0, g: 1, b: 1, a: 1}
+  lineStartColor: {r: 0, g: 0, b: 1, a: 1}
+  lineEndColor: {r: 0, g: 0, b: 0, a: 1}
+  meshColor: {r: 0, g: 1, b: 1, a: 1}
+  lineMaterial: {fileID: 0}
+  meshMaterial: {fileID: 0}
   id: 20
   tag: PINKY_TIP
   connections: 13000000
@@ -904,6 +1039,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshScaleFactor: 1
+  pointLightColor: {r: 0, g: 1, b: 1, a: 1}
+  lineStartColor: {r: 0, g: 0, b: 1, a: 1}
+  lineEndColor: {r: 0, g: 0, b: 0, a: 1}
+  meshColor: {r: 0, g: 1, b: 1, a: 1}
+  lineMaterial: {fileID: 0}
+  meshMaterial: {fileID: 0}
   id: 8
   tag: INDEX_FINGER_TIP
   connections: 07000000
@@ -921,6 +1062,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshScaleFactor: 1
+  pointLightColor: {r: 0, g: 1, b: 1, a: 1}
+  lineStartColor: {r: 0, g: 0, b: 1, a: 1}
+  lineEndColor: {r: 0, g: 0, b: 0, a: 1}
+  meshColor: {r: 0, g: 1, b: 1, a: 1}
+  lineMaterial: {fileID: 0}
+  meshMaterial: {fileID: 0}
   id: 17
   tag: PINKY_MCP
   connections: 000000000d00000012000000
@@ -962,6 +1109,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshScaleFactor: 1
+  pointLightColor: {r: 0, g: 1, b: 1, a: 1}
+  lineStartColor: {r: 0, g: 0, b: 1, a: 1}
+  lineEndColor: {r: 0, g: 0, b: 0, a: 1}
+  meshColor: {r: 0, g: 1, b: 1, a: 1}
+  lineMaterial: {fileID: 0}
+  meshMaterial: {fileID: 0}
   id: 18
   tag: PINKY_PIP
   connections: 1100000013000000
@@ -1014,7 +1167,13 @@ MonoBehaviour:
   port: 30707
   startReceiving: 1
   printToConsole: 0
-  dataStream: 
+  clientData: 
+  resetHandOnIdle: 1
+  timeBeforeIdleStart: 5
+  idleTimeBeforeReset: 5
+  currentTimeBeforeIdleStart: 0
+  currentIdleTimeBeforeReset: 0
+  handIsIdle: 0
 --- !u!114 &1624785724
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1051,8 +1210,10 @@ MonoBehaviour:
   - {fileID: 965875681}
   - {fileID: 406213973}
   - {fileID: 1665188946}
-  lerpMovement: 0
-  landmarkLerpTime: 2.05
+  waitStartTime: 2.5
+  lerpMovement: 1
+  landmarkLerpTime: 7.5
+  resetHandLerpTime: 4
   xCorrection: -5
   yCorrection: -8.43
   zCorrection: 0
@@ -1069,6 +1230,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshScaleFactor: 1
+  pointLightColor: {r: 0, g: 1, b: 1, a: 1}
+  lineStartColor: {r: 0, g: 0, b: 1, a: 1}
+  lineEndColor: {r: 0, g: 0, b: 0, a: 1}
+  meshColor: {r: 0, g: 1, b: 1, a: 1}
+  lineMaterial: {fileID: 0}
+  meshMaterial: {fileID: 0}
   id: 5
   tag: INDEX_FINGER_MCP
   connections: 000000000600000009000000
@@ -1201,7 +1368,7 @@ PrefabInstance:
     - target: {fileID: 8660059688572434786, guid: 75164ed09e71f09459c13f28417addf3,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8660059688572434786, guid: 75164ed09e71f09459c13f28417addf3,
         type: 3}
@@ -1265,7 +1432,15 @@ PrefabInstance:
         type: 3}
       insertIndex: 0
       addedObject: {fileID: 330585546}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7043785182956594221, guid: 75164ed09e71f09459c13f28417addf3,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 619605662}
+    - targetCorrespondingSourceObject: {fileID: 2204263131497513183, guid: 75164ed09e71f09459c13f28417addf3,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 635997819}
   m_SourcePrefab: {fileID: 100100000, guid: 75164ed09e71f09459c13f28417addf3, type: 3}
 --- !u!114 &1895712726
 MonoBehaviour:
@@ -1280,6 +1455,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshScaleFactor: 1
+  pointLightColor: {r: 0, g: 1, b: 1, a: 1}
+  lineStartColor: {r: 0, g: 0, b: 1, a: 1}
+  lineEndColor: {r: 0, g: 0, b: 0, a: 1}
+  meshColor: {r: 0, g: 1, b: 1, a: 1}
+  lineMaterial: {fileID: 0}
+  meshMaterial: {fileID: 0}
   id: 10
   tag: MIDDLE_FINGER_PIP
   connections: 090000000b000000
@@ -1296,6 +1477,60 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fa2f1f3eb3b4b77b121fcd514e63e2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1943187109
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1943187110}
+  - component: {fileID: 1943187111}
+  m_Layer: 0
+  m_Name: Webcam
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1943187110
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1943187109}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1943187111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1943187109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3907f133d9ef432d802c371315c6db35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  handDetector: {fileID: 0}
+  maxHands: 1
+  minDetectionConfidence: 0.8
+  minTrackingConfidence: 0.5
+  handModelComplexity: 1
+  frameWidth: 1920
+  frameHeight: 1080
+  windowTitle: Image
+  cameraIndex: 0
+  runCapture: 1
 --- !u!114 &1984496644 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4544617128932172774, guid: 75164ed09e71f09459c13f28417addf3,
@@ -1321,6 +1556,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshScaleFactor: 1
+  pointLightColor: {r: 0, g: 1, b: 1, a: 1}
+  lineStartColor: {r: 0, g: 0, b: 1, a: 1}
+  lineEndColor: {r: 0, g: 0, b: 0, a: 1}
+  meshColor: {r: 0, g: 1, b: 1, a: 1}
+  lineMaterial: {fileID: 0}
+  meshMaterial: {fileID: 0}
   id: 19
   tag: PINKY_DIP
   connections: 1200000014000000

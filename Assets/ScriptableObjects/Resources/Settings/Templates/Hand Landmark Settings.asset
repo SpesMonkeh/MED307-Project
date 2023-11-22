@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05c25aadb5d44e4cb695f0b2cb343810, type: 3}
+  m_Name: Hand Landmark Settings
+  m_EditorClassIdentifier: 
+  setMeshMaterialColorBasedOnCoordinates: 1
+  meshScale: {x: 1, y: 1, z: 1}
+  meshMaterial: {fileID: 2100000, guid: bbf63669ee9c263449fc13b820b5caeb, type: 2}
+  meshPrimitive: 0
+  lineMaterial: {fileID: 2100000, guid: 76f3bd255bec76d47937bb98cbb4d130, type: 2}
+  tags:
+  - WRIST
+  - THUMB_CMC
+  - THUMB_MCP
+  - THUMB_IP
+  - THUMB_TIP
+  - INDEX_FINGER_MCP
+  - INDEX_FINGER_PIP
+  - INDEX_FINGER_DIP
+  - INDEX_FINGER_TIP
+  - MIDDLE_FINGER_MCP
+  - MIDDLE_FINGER_PIP
+  - MIDDLE_FINGER_DIP
+  - MIDDLE_FINGER_TIP
+  - RING_FINGER_MCP
+  - RING_FINGER_PIP
+  - RING_FINGER_DIP
+  - RING_FINGER_TIP
+  - PINKY_MCP
+  - PINKY_PIP
+  - PINKY_DIP
+  - PINKY_TIP
+  landmarkPositionSpace: 1
+  defaultLandmarkPositionSpace: 1
+  pointAnnotationSpace: 2
+  defaultPointAnnotationSpace: 2

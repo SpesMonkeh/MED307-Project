@@ -2,7 +2,7 @@
 // 10/09/2023
 
 using P307.Runtime.Hands.ScriptableObjects;
-using P307.Runtime.Utils;
+using P307.Shared;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;

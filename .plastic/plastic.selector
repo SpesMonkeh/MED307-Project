@@ -1,0 +1,4 @@
+repository "P3 3D Hand Tracking@MED30Tau@cloud"
+  path "/"
+    br "/main"
+    co "/main"

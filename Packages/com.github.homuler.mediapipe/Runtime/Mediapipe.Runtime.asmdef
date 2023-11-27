@@ -1,0 +1,17 @@
+{
+    "name": "Mediapipe.Runtime",
+    "rootNamespace": "",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "System.Runtime.CompilerServices.Unsafe.dll",
+        "Google.Protobuf_Packed.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,7 +1,6 @@
-﻿using Emgu.CV;
-using Emgu.CV.CvEnum;
-using Mediapipe.Unity.HandTracking;
+﻿using Mediapipe.Unity.HandTracking;
 using UnityEngine;
+using UnityEngine.Windows.WebCam;
 using static P307.Shared.Const307;
 
 namespace P307.Runtime.ComputerVision
@@ -9,7 +8,7 @@ namespace P307.Runtime.ComputerVision
 	[DisallowMultipleComponent]
 	public sealed class WebcamHandler : MonoBehaviour
 	{
-		// A wide video capture is important, as it gives the user more horizontal freedom of movement.
+		/*// A wide video capture is important, as it gives the user more horizontal freedom of movement.
 		[Header("Hands")]
 		[SerializeField] HandDetector handDetector;
 		[SerializeField, Range(ONE, TWO)] int maxHands = ONE;
@@ -65,7 +64,7 @@ namespace P307.Runtime.ComputerVision
 			if (runCapture is false)
 				return;
 
-		}
+		}*/
 
 		/*
 		 *

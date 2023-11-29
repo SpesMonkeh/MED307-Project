@@ -12,7 +12,6 @@ namespace Mediapipe.Unity
   public abstract class ImageSourceSolution<T> : Solution where T : GraphRunner
   {
     [SerializeField] protected Screen screen;
-    [SerializeField] protected Screen screen2;
     [SerializeField] protected T graphRunner;
     [SerializeField] protected TextureFramePool textureFramePool;
 
@@ -116,13 +115,11 @@ namespace Mediapipe.Unity
     {
       // NOTE: The screen will be resized later, keeping the aspect ratio.
       screen.Initialize(imageSource);
-      screen2.Initialize(imageSource);
     }
 
     protected virtual void RenderCurrentFrame(TextureFrame textureFrame)
     {
       screen.ReadSync(textureFrame);
-      screen2.ReadSync(textureFrame);
     }
 
     protected abstract void OnStartRun();

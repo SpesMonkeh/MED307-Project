@@ -4,19 +4,16 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-// Modified by Christian Holm Christensen 2023
-
 using UnityEngine;
 using UnityEngine.UI;
-using static P307.Shared.Const307;
 
 namespace Mediapipe.Unity
 {
   public class Screen : MonoBehaviour
   {
-    [SerializeField] RawImage _screen;
+    [SerializeField] private RawImage _screen;
 
-    ImageSource _imageSource;
+    private ImageSource _imageSource;
 
     public Texture texture
     {
@@ -51,7 +48,7 @@ namespace Mediapipe.Unity
 
     public void ReadSync(TextureFrame textureFrame)
     {
-      if (texture is not Texture2D)
+      if (!(texture is Texture2D))
       {
         texture = new Texture2D(_imageSource.textureWidth, _imageSource.textureHeight, TextureFormat.RGBA32, false);
         ResetUvRect(RunningMode.Sync);
@@ -61,7 +58,7 @@ namespace Mediapipe.Unity
 
     private void ResetUvRect(RunningMode runningMode)
     {
-      var rect = new UnityEngine.Rect(ZERO, ZERO, ONE, ONE);
+      var rect = new UnityEngine.Rect(0, 0, 1, 1);
 
       if (_imageSource.isVerticallyFlipped && runningMode == RunningMode.Async)
       {
@@ -88,8 +85,14 @@ namespace Mediapipe.Unity
       uvRect = rect;
     }
 
-    static UnityEngine.Rect FlipHorizontally(UnityEngine.Rect rect) => new(ONE - rect.x, rect.y, -rect.width, rect.height);
+    private UnityEngine.Rect FlipHorizontally(UnityEngine.Rect rect)
+    {
+      return new UnityEngine.Rect(1 - rect.x, rect.y, -rect.width, rect.height);
+    }
 
-    static UnityEngine.Rect FlipVertically(UnityEngine.Rect rect) => new(rect.x, ONE - rect.y, rect.width, -rect.height);
+    private UnityEngine.Rect FlipVertically(UnityEngine.Rect rect)
+    {
+      return new UnityEngine.Rect(rect.x, 1 - rect.y, rect.width, -rect.height);
+    }
   }
 }

@@ -53,9 +53,11 @@ namespace Mediapipe.Unity
     {
       if (ActivateFor(target))
       {
-        Vector3 position = GetScreenRect().GetPoint(target, scale, rotationAngle, isMirrored);
-        if (!visualizeZ) 
+        var position = GetScreenRect().GetPoint(target, scale, rotationAngle, isMirrored);
+        if (!visualizeZ)
+        {
           position.z = 0.0f;
+        }
         transform.localPosition = position;
       }
     }

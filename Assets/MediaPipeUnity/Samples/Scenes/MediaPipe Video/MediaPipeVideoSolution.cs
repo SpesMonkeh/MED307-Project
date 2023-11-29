@@ -19,9 +19,6 @@ namespace Mediapipe.Unity.MediaPipeVideo
       screen.Resize(imageSource.textureWidth, imageSource.textureHeight);
       screen.Rotate(imageSource.rotation.Reverse());
 
-      screen2.Resize(imageSource.textureWidth, imageSource.textureHeight);
-      screen2.Rotate(imageSource.rotation.Reverse());
-      
       // Setup output texture
       if (graphRunner.configType == GraphRunner.ConfigType.OpenGLES)
       {
@@ -31,8 +28,6 @@ namespace Mediapipe.Unity.MediaPipeVideo
           graphRunner.SetupOutputPacket(textureFrame);
 
           screen.texture = Texture2D.CreateExternalTexture(textureFrame.width, textureFrame.height, textureFrame.format, false, false, textureFrame.GetNativeTexturePtr());
-          
-          screen2.texture = Texture2D.CreateExternalTexture(textureFrame.width, textureFrame.height, textureFrame.format, false, false, textureFrame.GetNativeTexturePtr());
         }
         else
         {
@@ -43,7 +38,6 @@ namespace Mediapipe.Unity.MediaPipeVideo
       {
         _outputTexture = new Texture2D(imageSource.textureWidth, imageSource.textureHeight, TextureFormat.RGBA32, false);
         screen.texture = _outputTexture;
-        screen2.texture = _outputTexture;
       }
     }
 

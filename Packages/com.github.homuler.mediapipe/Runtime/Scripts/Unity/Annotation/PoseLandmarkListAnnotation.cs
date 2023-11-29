@@ -202,7 +202,7 @@ namespace Mediapipe.Unity
 
     private void ApplyLeftLandmarkColor(Color color)
     {
-      var annotationCount = _landmarkListAnnotation == null ? 0 : _landmarkListAnnotation.Count;
+      var annotationCount = _landmarkListAnnotation == null ? 0 : _landmarkListAnnotation.count;
       if (annotationCount >= _LandmarkCount)
       {
         foreach (var index in _LeftLandmarks)
@@ -214,7 +214,7 @@ namespace Mediapipe.Unity
 
     private void ApplyRightLandmarkColor(Color color)
     {
-      var annotationCount = _landmarkListAnnotation == null ? 0 : _landmarkListAnnotation.Count;
+      var annotationCount = _landmarkListAnnotation == null ? 0 : _landmarkListAnnotation.count;
       if (annotationCount >= _LandmarkCount)
       {
         foreach (var index in _RightLandmarks)

@@ -7,8 +7,10 @@
     "allowUnsafeCode": true,
     "overrideReferences": true,
     "precompiledReferences": [
-        "System.Runtime.CompilerServices.Unsafe.dll",
-        "Google.Protobuf_Packed.dll"
+        "Google.Protobuf.dll",
+        "System.Buffers.dll",
+        "System.Memory.dll",
+        "System.Runtime.CompilerServices.Unsafe.dll"
     ],
     "autoReferenced": true,
     "defineConstraints": [],

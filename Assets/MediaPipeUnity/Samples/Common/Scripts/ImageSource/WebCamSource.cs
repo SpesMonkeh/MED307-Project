@@ -19,28 +19,29 @@ namespace Mediapipe.Unity
   public class WebCamSource : ImageSource
   {
     [Tooltip("For the default resolution, the one whose width is closest to this value will be chosen")]
-    [SerializeField] int _preferableDefaultWidth = 1280;
+    [SerializeField] private int _preferableDefaultWidth = 1280;
 
-    const string _TAG = nameof(WebCamSource);
+    private const string _TAG = nameof(WebCamSource);
 
-    [SerializeField] ResolutionStruct[] _defaultAvailableResolutions = {
-      new(176, 144, 30),
-      new(320, 240, 30),
-      new(424, 240, 30),
-      new(640, 360, 30),
-      new(640, 480, 30),
-      new(848, 480, 30),
-      new(960, 540, 30),
-      new(1280, 720, 30),
-      new(1600, 896, 30),
-      new(1920, 1080, 30),
+    [SerializeField]
+    private ResolutionStruct[] _defaultAvailableResolutions = new ResolutionStruct[] {
+      new ResolutionStruct(176, 144, 30),
+      new ResolutionStruct(320, 240, 30),
+      new ResolutionStruct(424, 240, 30),
+      new ResolutionStruct(640, 360, 30),
+      new ResolutionStruct(640, 480, 30),
+      new ResolutionStruct(848, 480, 30),
+      new ResolutionStruct(960, 540, 30),
+      new ResolutionStruct(1280, 720, 30),
+      new ResolutionStruct(1600, 896, 30),
+      new ResolutionStruct(1920, 1080, 30),
     };
 
-    static readonly object _PermissionLock = new();
-    static bool _IsPermitted;
+    private static readonly object _PermissionLock = new object();
+    private static bool _IsPermitted = false;
 
-    WebCamTexture _webCamTexture;
-    WebCamTexture webCamTexture
+    private WebCamTexture _webCamTexture;
+    private WebCamTexture webCamTexture
     {
       get => _webCamTexture;
       set
@@ -57,18 +58,18 @@ namespace Mediapipe.Unity
     public override int textureHeight => !isPrepared ? 0 : webCamTexture.height;
 
     public override bool isVerticallyFlipped => isPrepared && webCamTexture.videoVerticallyMirrored;
-    public override bool isFrontFacing => isPrepared && (webCamDevice is { } valueOfWebCamDevice) && valueOfWebCamDevice.isFrontFacing;
+    public override bool isFrontFacing => isPrepared && (webCamDevice is WebCamDevice valueOfWebCamDevice) && valueOfWebCamDevice.isFrontFacing;
     public override RotationAngle rotation => !isPrepared ? RotationAngle.Rotation0 : (RotationAngle)webCamTexture.videoRotationAngle;
 
-    WebCamDevice? _webCamDevice;
-    WebCamDevice? webCamDevice
+    private WebCamDevice? _webCamDevice;
+    private WebCamDevice? webCamDevice
     {
       get => _webCamDevice;
       set
       {
-        if (_webCamDevice is { } valueOfWebCamDevice)
+        if (_webCamDevice is WebCamDevice valueOfWebCamDevice)
         {
-          if (value is { } valueOfValue && valueOfValue.name == valueOfWebCamDevice.name)
+          if (value is WebCamDevice valueOfValue && valueOfValue.name == valueOfWebCamDevice.name)
           {
             // not changed
             return;
@@ -83,7 +84,7 @@ namespace Mediapipe.Unity
         resolution = GetDefaultResolution();
       }
     }
-    public override string sourceName => (webCamDevice is { } valueOfWebCamDevice) ? valueOfWebCamDevice.name : null;
+    public override string sourceName => (webCamDevice is WebCamDevice valueOfWebCamDevice) ? valueOfWebCamDevice.name : null;
 
     private WebCamDevice[] _availableSources;
     private WebCamDevice[] availableSources
@@ -119,9 +120,9 @@ namespace Mediapipe.Unity
 
     public override bool isPrepared => webCamTexture != null;
     public override bool isPlaying => webCamTexture != null && webCamTexture.isPlaying;
-    bool _isInitialized;
+    private bool _isInitialized;
 
-    IEnumerator Start()
+    private IEnumerator Start()
     {
       yield return GetPermission();
 
@@ -141,7 +142,7 @@ namespace Mediapipe.Unity
       _isInitialized = true;
     }
 
-    IEnumerator GetPermission()
+    private IEnumerator GetPermission()
     {
       lock (_PermissionLock)
       {
@@ -238,29 +239,29 @@ namespace Mediapipe.Unity
       return webCamTexture;
     }
 
-    ResolutionStruct GetDefaultResolution()
+    private ResolutionStruct GetDefaultResolution()
     {
-      ResolutionStruct[] resolutions = availableResolutions;
-      return resolutions == null || resolutions.Length == 0 ? new ResolutionStruct() : resolutions.OrderBy(res => res, new ResolutionStructComparer(_preferableDefaultWidth)).First();
+      var resolutions = availableResolutions;
+      return resolutions == null || resolutions.Length == 0 ? new ResolutionStruct() : resolutions.OrderBy(resolution => resolution, new ResolutionStructComparer(_preferableDefaultWidth)).First();
     }
 
-    void InitializeWebCamTexture()
+    private void InitializeWebCamTexture()
     {
       Stop();
-      if (webCamDevice is { } valueOfWebCamDevice)
+      if (webCamDevice is WebCamDevice valueOfWebCamDevice)
       {
-        webCamTexture = new WebCamTexture(valueOfWebCamDevice.name, resolution.width, resolution.height, (int)resolution.frameRate.value);
+        webCamTexture = new WebCamTexture(valueOfWebCamDevice.name, resolution.width, resolution.height, (int)resolution.frameRate);
         return;
       }
       throw new InvalidOperationException("Cannot initialize WebCamTexture because WebCamDevice is not selected");
     }
 
-    IEnumerator WaitForWebCamTexture()
+    private IEnumerator WaitForWebCamTexture()
     {
-      const int timeout_frame = 2000;
-      int count = 0;
+      const int timeoutFrame = 2000;
+      var count = 0;
       Logger.LogVerbose("Waiting for WebCamTexture to start");
-      yield return new WaitUntil(() => count++ > timeout_frame || webCamTexture.width > 16);
+      yield return new WaitUntil(() => count++ > timeoutFrame || webCamTexture.width > 16);
 
       if (webCamTexture.width <= 16)
       {
@@ -268,9 +269,9 @@ namespace Mediapipe.Unity
       }
     }
 
-    class ResolutionStructComparer : IComparer<ResolutionStruct>
+    private class ResolutionStructComparer : IComparer<ResolutionStruct>
     {
-      readonly int _preferableDefaultWidth;
+      private readonly int _preferableDefaultWidth;
 
       public ResolutionStructComparer(int preferableDefaultWidth)
       {
@@ -291,7 +292,7 @@ namespace Mediapipe.Unity
           return a.height - b.height;
         }
         // prefer smaller frame rate
-        return (int)(a.frameRate.value - b.frameRate.value);
+        return (int)(a.frameRate - b.frameRate);
       }
     }
   }

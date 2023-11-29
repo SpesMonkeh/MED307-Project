@@ -63,9 +63,9 @@ namespace Mediapipe.Unity
       }
     }
 
-    protected override RectangleAnnotation InstantiateChild(bool setActive = true)
+    protected override RectangleAnnotation InstantiateChild(bool isActive = true)
     {
-      var annotation = base.InstantiateChild(setActive);
+      var annotation = base.InstantiateChild(isActive);
       annotation.SetLineWidth(_lineWidth);
       annotation.SetColor(_color);
       return annotation;
@@ -73,7 +73,7 @@ namespace Mediapipe.Unity
 
     private void ApplyColor(Color color)
     {
-      foreach (var rect in Children)
+      foreach (var rect in children)
       {
         if (rect != null) { rect.SetColor(color); }
       }
@@ -81,7 +81,7 @@ namespace Mediapipe.Unity
 
     private void ApplyLineWidth(float lineWidth)
     {
-      foreach (var rect in Children)
+      foreach (var rect in children)
       {
         if (rect != null) { rect.SetLineWidth(lineWidth); }
       }

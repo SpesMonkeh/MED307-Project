@@ -100,9 +100,9 @@ namespace Mediapipe.Unity
       }
     }
 
-    protected override FaceLandmarkListWithIrisAnnotation InstantiateChild(bool setActive = true)
+    protected override FaceLandmarkListWithIrisAnnotation InstantiateChild(bool isActive = true)
     {
-      var annotation = base.InstantiateChild(setActive);
+      var annotation = base.InstantiateChild(isActive);
       annotation.SetFaceLandmarkRadius(_faceLandmarkRadius);
       annotation.SetIrisLandmarkRadius(_irisLandmarkRadius);
       annotation.SetFaceLandmarkColor(_faceLandmarkColor);
@@ -116,7 +116,7 @@ namespace Mediapipe.Unity
 
     private void ApplyFaceLandmarkRadius(float radius)
     {
-      foreach (var faceLandmarkList in Children)
+      foreach (var faceLandmarkList in children)
       {
         if (faceLandmarkList != null) { faceLandmarkList.SetFaceLandmarkRadius(radius); }
       }
@@ -124,7 +124,7 @@ namespace Mediapipe.Unity
 
     private void ApplyIrisLandmarkRadius(float radius)
     {
-      foreach (var faceLandmarkList in Children)
+      foreach (var faceLandmarkList in children)
       {
         if (faceLandmarkList != null) { faceLandmarkList.SetIrisLandmarkRadius(radius); }
       }
@@ -132,7 +132,7 @@ namespace Mediapipe.Unity
 
     private void ApplyFaceLandmarkColor(Color color)
     {
-      foreach (var faceLandmarkList in Children)
+      foreach (var faceLandmarkList in children)
       {
         if (faceLandmarkList != null) { faceLandmarkList.SetFaceLandmarkColor(color); }
       }
@@ -140,7 +140,7 @@ namespace Mediapipe.Unity
 
     private void ApplyIrisLandmarkColor(Color color)
     {
-      foreach (var faceLandmarkList in Children)
+      foreach (var faceLandmarkList in children)
       {
         if (faceLandmarkList != null) { faceLandmarkList.SetIrisLandmarkColor(color); }
       }
@@ -148,7 +148,7 @@ namespace Mediapipe.Unity
 
     private void ApplyFaceConnectionWidth(float width)
     {
-      foreach (var faceLandmarkList in Children)
+      foreach (var faceLandmarkList in children)
       {
         if (faceLandmarkList != null) { faceLandmarkList.SetFaceConnectionWidth(width); }
       }
@@ -156,7 +156,7 @@ namespace Mediapipe.Unity
 
     private void ApplyFaceConnectionColor(Color color)
     {
-      foreach (var faceLandmarkList in Children)
+      foreach (var faceLandmarkList in children)
       {
         if (faceLandmarkList != null) { faceLandmarkList.SetFaceConnectionColor(color); }
       }
@@ -164,7 +164,7 @@ namespace Mediapipe.Unity
 
     private void ApplyIrisCircleWidth(float width)
     {
-      foreach (var faceLandmarkList in Children)
+      foreach (var faceLandmarkList in children)
       {
         if (faceLandmarkList != null) { faceLandmarkList.SetIrisCircleWidth(width); }
       }
@@ -172,7 +172,7 @@ namespace Mediapipe.Unity
 
     private void ApplyIrisCircleColor(Color color)
     {
-      foreach (var faceLandmarkList in Children)
+      foreach (var faceLandmarkList in children)
       {
         if (faceLandmarkList != null) { faceLandmarkList.SetIrisCircleColor(color); }
       }

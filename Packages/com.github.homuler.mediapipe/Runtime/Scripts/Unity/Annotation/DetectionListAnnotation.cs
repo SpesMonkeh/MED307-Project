@@ -63,9 +63,9 @@ namespace Mediapipe.Unity
       Draw(target?.Detection, threshold);
     }
 
-    protected override DetectionAnnotation InstantiateChild(bool setActive = true)
+    protected override DetectionAnnotation InstantiateChild(bool isActive = true)
     {
-      var annotation = base.InstantiateChild(setActive);
+      var annotation = base.InstantiateChild(isActive);
       annotation.SetLineWidth(_lineWidth);
       annotation.SetKeypointRadius(_keypointRadius);
       return annotation;
@@ -73,7 +73,7 @@ namespace Mediapipe.Unity
 
     private void ApplyLineWidth(float lineWidth)
     {
-      foreach (var detection in Children)
+      foreach (var detection in children)
       {
         if (detection != null) { detection.SetLineWidth(lineWidth); }
       }
@@ -81,7 +81,7 @@ namespace Mediapipe.Unity
 
     private void ApplyKeypointRadius(float keypointRadius)
     {
-      foreach (var detection in Children)
+      foreach (var detection in children)
       {
         if (detection != null) { detection.SetKeypointRadius(keypointRadius); }
       }

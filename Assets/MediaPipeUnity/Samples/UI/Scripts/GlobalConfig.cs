@@ -10,19 +10,19 @@ namespace Mediapipe.Unity.UI
 {
   public class GlobalConfig : ModalContents
   {
-    const string _GlogLogtostederrPath = "Scroll View/Viewport/Contents/GlogLogtostderr/Toggle";
-    const string _GlogStderrthresholdPath = "Scroll View/Viewport/Contents/GlogStderrthreshold/Dropdown";
-    const string _GlogMinloglevelPath = "Scroll View/Viewport/Contents/GlogMinloglevel/Dropdown";
-    const string _GlogVPath = "Scroll View/Viewport/Contents/GlogV/Dropdown";
-    const string _GlogLogDirPath = "Scroll View/Viewport/Contents/GlogLogDir/InputField";
+    private const string _GlogLogtostederrPath = "Scroll View/Viewport/Contents/GlogLogtostderr/Toggle";
+    private const string _GlogStderrthresholdPath = "Scroll View/Viewport/Contents/GlogStderrthreshold/Dropdown";
+    private const string _GlogMinloglevelPath = "Scroll View/Viewport/Contents/GlogMinloglevel/Dropdown";
+    private const string _GlogVPath = "Scroll View/Viewport/Contents/GlogV/Dropdown";
+    private const string _GlogLogDirPath = "Scroll View/Viewport/Contents/GlogLogDir/InputField";
 
-    Toggle _glogLogtostderrInput;
-    Dropdown _glogStderrthresholdInput;
-    Dropdown _glogMinloglevelInput;
-    Dropdown _glogVInput;
-    InputField _glogLogDirInput;
+    private Toggle _glogLogtostderrInput;
+    private Dropdown _glogStderrthresholdInput;
+    private Dropdown _glogMinloglevelInput;
+    private Dropdown _glogVInput;
+    private InputField _glogLogDirInput;
 
-    void Start()
+    private void Start()
     {
       InitializeGlogLogtostderr();
       InitializeGlogStderrthreshold();
@@ -43,31 +43,31 @@ namespace Mediapipe.Unity.UI
       Exit();
     }
 
-    void InitializeGlogLogtostderr()
+    private void InitializeGlogLogtostderr()
     {
       _glogLogtostderrInput = gameObject.transform.Find(_GlogLogtostederrPath).gameObject.GetComponent<Toggle>();
       _glogLogtostderrInput.isOn = GlobalConfigManager.GlogLogtostderr;
     }
 
-    void InitializeGlogStderrthreshold()
+    private void InitializeGlogStderrthreshold()
     {
       _glogStderrthresholdInput = gameObject.transform.Find(_GlogStderrthresholdPath).gameObject.GetComponent<Dropdown>();
       _glogStderrthresholdInput.value = GlobalConfigManager.GlogStderrthreshold;
     }
 
-    void InitializeGlogMinloglevel()
+    private void InitializeGlogMinloglevel()
     {
       _glogMinloglevelInput = gameObject.transform.Find(_GlogMinloglevelPath).gameObject.GetComponent<Dropdown>();
       _glogMinloglevelInput.value = GlobalConfigManager.GlogMinloglevel;
     }
 
-    void InitializeGlogV()
+    private void InitializeGlogV()
     {
       _glogVInput = gameObject.transform.Find(_GlogVPath).gameObject.GetComponent<Dropdown>();
       _glogVInput.value = GlobalConfigManager.GlogV;
     }
 
-    void InitializeGlogLogDir()
+    private void InitializeGlogLogDir()
     {
       _glogLogDirInput = gameObject.transform.Find(_GlogLogDirPath).gameObject.GetComponent<InputField>();
       _glogLogDirInput.text = GlobalConfigManager.GlogLogDir;

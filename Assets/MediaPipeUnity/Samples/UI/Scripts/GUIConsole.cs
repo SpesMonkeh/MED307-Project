@@ -3,120 +3,107 @@
 // Use of this source code is governed by an MIT-style
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
-// Modified by SpesMonkeh, 2023. 
 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static P307.Shared.Const307;
 
 namespace Mediapipe.Unity.UI
 {
-	public class GUIConsole : MonoBehaviour
-	{
-		[SerializeField] GameObject _logLinePrefab;
-		[SerializeField] int _maxLines = 200;
-		
-		int lines = 0;
-		Transform contentRoot;
-		MemorizedLogger logger;
-		Queue<MemorizedLogger.LogStruct> scheduledLogs;
-		WaitForEndOfFrame waitForEndOfFrame;
+  public class GUIConsole : MonoBehaviour
+  {
+    [SerializeField] private GameObject _logLinePrefab;
+    [SerializeField] private int _maxLines = 200;
 
-		const string CONTENT_PATH = "Viewport/Content";
-        
-		ScrollRect ScrollRect => gameObject.GetComponent<ScrollRect>();
+    private const string _ContentPath = "Viewport/Content";
 
-		GameObject FirstLineGameObject => contentRoot != null 
-			? contentRoot.GetChild(ZERO).gameObject
-			: null;
+    private Transform _contentRoot;
+    private MemoizedLogger _logger;
+    private Queue<MemoizedLogger.LogStruct> _scheduledLogs;
+    private int _lines = 0;
 
-		void Start()
-		{
-			waitForEndOfFrame = new WaitForEndOfFrame();
-			scheduledLogs = new Queue<MemorizedLogger.LogStruct>();
-			InitializeView();
-		}
+    private ScrollRect scrollRect => gameObject.GetComponent<ScrollRect>();
 
-		void LateUpdate()
-		{
-			RenderScheduledLogs();
-		}
+    private void Start()
+    {
+      _scheduledLogs = new Queue<MemoizedLogger.LogStruct>();
+      InitializeView();
+    }
 
-		void OnDestroy()
-		{
-			logger.OnLogOutput -= ScheduleLog;
-		}
+    private void LateUpdate()
+    {
+      RenderScheduledLogs();
+    }
 
-		void InitializeView()
-		{
-			contentRoot = gameObject.transform.Find(CONTENT_PATH).gameObject.transform;
-			if (Logger.InternalLogger is not MemorizedLogger memorizedLogger)
-				return;
-			
-			logger = memorizedLogger;
-			lock (((ICollection)logger.histories).SyncRoot)
-			{
-				foreach (var log in logger.histories)
-					AppendLog(log);
-				logger.OnLogOutput += ScheduleLog;
-			}
+    private void OnDestroy()
+    {
+      _logger.OnLogOutput -= ScheduleLog;
+    }
 
-			_ = StartCoroutine(ScrollToBottom());
-		}
+    private void InitializeView()
+    {
+      _contentRoot = gameObject.transform.Find(_ContentPath).gameObject.transform;
 
-		protected void ScheduleLog(MemorizedLogger.LogStruct log)
-		{
-			lock (((ICollection)scheduledLogs).SyncRoot)
-			{
-				scheduledLogs.Enqueue(log);
-			}
-		}
+      if (!(Logger.InternalLogger is MemoizedLogger))
+      {
+        return;
+      }
 
-		void RenderScheduledLogs()
-		{
-			lock (((ICollection)scheduledLogs).SyncRoot)
-			{
-				while (scheduledLogs.Count > ZERO)
-					AppendLog(scheduledLogs.Dequeue());
-			}
-			if (ScrollRect.verticalNormalizedPosition < ONE_MILLIONTH)
-				_ = StartCoroutine(ScrollToBottom());
-		}
+      _logger = (MemoizedLogger)Logger.InternalLogger;
+      lock (((ICollection)_logger.histories).SyncRoot)
+      {
+        foreach (var log in _logger.histories)
+        {
+          AppendLog(log);
+        }
+        _logger.OnLogOutput += ScheduleLog;
+      }
 
-		void AppendLog(MemorizedLogger.LogStruct logStruct)
-		{
-			MakeLine(logStruct);
-			if (++lines <= _maxLines)
-				return;
-			RemoveLine();
-		}
+      var _ = StartCoroutine(ScrollToBottom());
+    }
 
-		void MakeLine(MemorizedLogger.LogStruct logStruct)
-		{
-			const int max_game_obj_name_characters = 30;
-			GameObject logLineObj = Instantiate(_logLinePrefab, contentRoot);
-			LogLine newLine = logLineObj.GetComponent<LogLine>();
-			newLine.SetLog(logStruct);
-			string lineTag = newLine.LineTag;
-			int lastCharIndex = Mathf.Max(max_game_obj_name_characters - lineTag.Length, ZERO);
-			logLineObj.name = $"{lineTag} :: {newLine.Message[..lastCharIndex]}";
-		}
+    private void ScheduleLog(MemoizedLogger.LogStruct logStruct)
+    {
+      lock (((ICollection)_scheduledLogs).SyncRoot)
+      {
+        _scheduledLogs.Enqueue(logStruct);
+      }
+    }
 
-		void RemoveLine()
-		{
-			if (lines is ZERO || FirstLineGameObject == null)
-				return;
-			Destroy(FirstLineGameObject);
-			lines--;
-		}
+    private void RenderScheduledLogs()
+    {
+      lock (((ICollection)_scheduledLogs).SyncRoot)
+      {
+        while (_scheduledLogs.Count > 0)
+        {
+          AppendLog(_scheduledLogs.Dequeue());
+        }
+      }
 
-		IEnumerator ScrollToBottom()
-		{
-			yield return waitForEndOfFrame;
-			Canvas.ForceUpdateCanvases();
-			ScrollRect.verticalNormalizedPosition = ZERO;
-		}
-	}
+      if (scrollRect.verticalNormalizedPosition < 1e-6)
+      {
+        var _ = StartCoroutine(ScrollToBottom());
+      }
+    }
+
+    private void AppendLog(MemoizedLogger.LogStruct logStruct)
+    {
+      var logLine = Instantiate(_logLinePrefab, _contentRoot).GetComponent<LogLine>();
+      logLine.SetLog(logStruct);
+
+      if (++_lines > _maxLines)
+      {
+        Destroy(_contentRoot.GetChild(0).gameObject);
+        _lines--;
+      }
+    }
+
+    private IEnumerator ScrollToBottom()
+    {
+      yield return new WaitForEndOfFrame();
+      Canvas.ForceUpdateCanvases();
+      scrollRect.verticalNormalizedPosition = 0f;
+    }
+  }
 }

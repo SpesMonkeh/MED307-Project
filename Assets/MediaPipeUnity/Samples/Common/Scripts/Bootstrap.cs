@@ -38,7 +38,7 @@ namespace Mediapipe.Unity
 
     private IEnumerator Init()
     {
-      Logger.SetLogger(new MemorizedLogger(100));
+      Logger.SetLogger(new MemoizedLogger(100));
       Logger.MinLogLevel = Logger.LogLevel.Debug;
 
       Protobuf.SetLogHandler(Protobuf.DefaultLogHandler);

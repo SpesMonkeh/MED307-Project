@@ -4,11 +4,8 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-using System;
 using System.Collections;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Mediapipe.Unity
 {
@@ -40,7 +37,7 @@ namespace Mediapipe.Unity
 
     /// <summary>
     ///   Pause the main program.
-    /// </summary>
+    /// <summary>
     public virtual void Pause()
     {
       isPaused = true;
@@ -103,20 +100,18 @@ namespace Mediapipe.Unity
       Logger.LogWarning(TAG, "Global Bootstrap instance is not found (maybe running a sample scene directly), "
                             + "so activating a fallback Bootstrap instance attached to each Solution object");
 
-      var bs = GetComponent<Bootstrap>();
-      bs.enabled = true;
+      var bootstrap = GetComponent<Bootstrap>();
+      bootstrap.enabled = true;
 
       // hide menu button when trying a single scene.
       DisableMenuButton();
-      return bs;
+      return bootstrap;
     }
 
-    void DisableMenuButton()
+    private void DisableMenuButton()
     {
-      const string button_game_object_name = "MenuButton";
-      var menuButton = FindObjectsByType<Button>(FindObjectsInactive.Include, FindObjectsSortMode.None)
-        .First(b => b.gameObject.name is button_game_object_name);
-      menuButton.gameObject.SetActive(false);
+      var menuButton = GameObject.Find("MenuButton");
+      menuButton.SetActive(false);
     }
   }
 }

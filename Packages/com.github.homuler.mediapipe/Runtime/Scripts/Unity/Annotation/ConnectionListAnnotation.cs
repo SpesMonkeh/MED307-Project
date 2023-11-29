@@ -57,15 +57,15 @@ namespace Mediapipe.Unity
 
     public void Redraw()
     {
-      foreach (var connection in Children)
+      foreach (var connection in children)
       {
         if (connection != null) { connection.Redraw(); }
       }
     }
 
-    protected override ConnectionAnnotation InstantiateChild(bool setActive = true)
+    protected override ConnectionAnnotation InstantiateChild(bool isActive = true)
     {
-      var annotation = base.InstantiateChild(setActive);
+      var annotation = base.InstantiateChild(isActive);
       annotation.SetColor(_color);
       annotation.SetLineWidth(_lineWidth);
       return annotation;
@@ -73,7 +73,7 @@ namespace Mediapipe.Unity
 
     private void ApplyColor(Color color)
     {
-      foreach (var line in Children)
+      foreach (var line in children)
       {
         if (line != null) { line.SetColor(color); }
       }
@@ -81,7 +81,7 @@ namespace Mediapipe.Unity
 
     private void ApplyLineWidth(float lineWidth)
     {
-      foreach (var line in Children)
+      foreach (var line in children)
       {
         if (line != null) { line.SetLineWidth(lineWidth); }
       }

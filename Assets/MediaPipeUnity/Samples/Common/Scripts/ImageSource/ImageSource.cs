@@ -8,7 +8,6 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
-using static P307.Shared.Const307;
 
 namespace Mediapipe.Unity
 {
@@ -19,37 +18,32 @@ namespace Mediapipe.Unity
     {
       public int width;
       public int height;
-      public int refreshRate;
-      public RefreshRate frameRate;
+      public double frameRate;
 
       public ResolutionStruct(int width, int height, double frameRate)
       {
         this.width = width;
         this.height = height;
-        this.refreshRate = (int)frameRate;
-        this.frameRate = new RefreshRate();
-        this.frameRate.numerator = (uint)refreshRate;
-        this.frameRate.denominator = ONE;
+        this.frameRate = frameRate;
       }
 
       public ResolutionStruct(Resolution resolution)
       {
         width = resolution.width;
         height = resolution.height;
-        frameRate = resolution.refreshRateRatio;
-        refreshRate = (int)frameRate.value;
+        frameRate = resolution.refreshRate;
       }
 
       public Resolution ToResolution()
       {
-        return new Resolution { width = width, height = height, refreshRateRatio = frameRate };
+        return new Resolution() { width = width, height = height, refreshRate = (int)frameRate };
       }
 
       public override string ToString()
       {
         var aspectRatio = $"{width}x{height}";
-        var frameRateStr = frameRate.value.ToString("#.##");
-        return frameRate.value > ZERO ? $"{aspectRatio} ({frameRateStr}Hz)" : aspectRatio;
+        var frameRateStr = frameRate.ToString("#.##");
+        return frameRate > 0 ? $"{aspectRatio} ({frameRateStr}Hz)" : aspectRatio;
       }
     }
 
@@ -67,7 +61,7 @@ namespace Mediapipe.Unity
     /// <remarks>
     ///   If <see cref="type" /> does not support frame rate, it returns zero.
     /// </remarks>
-    public virtual double frameRate => resolution.frameRate.value;
+    public virtual double frameRate => resolution.frameRate;
     public float focalLengthPx { get; } = 2.0f; // TODO: calculate at runtime
     public virtual bool isHorizontallyFlipped { get; set; } = false;
     public virtual bool isVerticallyFlipped { get; } = false;

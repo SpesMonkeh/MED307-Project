@@ -12,35 +12,43 @@ namespace Mediapipe.Unity
 {
   public abstract class ListAnnotation<T> : HierarchicalAnnotation where T : HierarchicalAnnotation
   {
-    [SerializeField] GameObject _annotationPrefab;
-    [SerializeField] List<T> _children = new();
+    [SerializeField] private GameObject _annotationPrefab;
 
-    protected List<T> Children => _children ??= new List<T>();
+    private List<T> _children;
+    protected List<T> children
+    {
+      get
+      {
+        if (_children == null)
+        {
+          _children = new List<T>();
+        }
+        return _children;
+      }
+    }
 
-    public List<T> GetChildren => Children;
-    
-    public T this[int index] => Children[index];
+    public T this[int index] => children[index];
 
-    public int Count => Children.Count;
+    public int count => children.Count;
 
     public void Fill(int count)
     {
-      while (Children.Count < count)
+      while (children.Count < count)
       {
-        Children.Add(InstantiateChild(false));
+        children.Add(InstantiateChild(false));
       }
     }
 
     public void Add(T element)
     {
-      Children.Add(element);
+      children.Add(element);
     }
 
     public override bool isMirrored
     {
       set
       {
-        foreach (T child in Children)
+        foreach (var child in children)
         {
           child.isMirrored = value;
         }
@@ -52,7 +60,7 @@ namespace Mediapipe.Unity
     {
       set
       {
-        foreach (var child in Children)
+        foreach (var child in children)
         {
           child.rotationAngle = value;
         }
@@ -62,53 +70,52 @@ namespace Mediapipe.Unity
 
     protected virtual void Destroy()
     {
-      foreach (var child in Children)
+      foreach (var child in children)
       {
         Destroy(child);
       }
       _children = null;
     }
 
-    protected virtual T InstantiateChild(bool setActive = true)
+    protected virtual T InstantiateChild(bool isActive = true)
     {
-      T annotation = InstantiateChild<T>(_annotationPrefab);
-      annotation.SetActive(setActive);
+      var annotation = InstantiateChild<T>(_annotationPrefab);
+      annotation.SetActive(isActive);
       return annotation;
     }
 
     /// <summary>
-    ///   Zip <see cref="Children" /> and <paramref name="argumentList" />, and call <paramref name="action" /> with each pair.
-    ///   If <paramref name="argumentList" /> has more elements than <see cref="Children" />, <see cref="Children" /> elements will be initialized with <see cref="InstantiateChild" />.
+    ///   Zip <see cref="children" /> and <paramref name="argumentList" />, and call <paramref name="action" /> with each pair.
+    ///   If <paramref name="argumentList" /> has more elements than <see cref="children" />, <see cref="children" /> elements will be initialized with <see cref="InstantiateChild" />.
     /// </summary>
-    /// <param name="argumentList"></param>
     /// <param name="action">
     ///   This will receive 2 arguments and return void.
-    ///   The 1st argument is <typeparamref name="T" />, that is an ith element in <see cref="Children" />.
+    ///   The 1st argument is <typeparamref name="T" />, that is an ith element in <see cref="children" />.
     ///   The 2nd argument is <typeparamref name="TArg" />, that is also an ith element in <paramref name="argumentList" />.
     /// </param>
     protected void CallActionForAll<TArg>(IList<TArg> argumentList, Action<T, TArg> action)
     {
-      for (var i = 0; i < Mathf.Max(Children.Count, argumentList.Count); i++)
+      for (var i = 0; i < Mathf.Max(children.Count, argumentList.Count); i++)
       {
         if (i >= argumentList.Count)
         {
           // children.Count > argumentList.Count
-          action(Children[i], default);
+          action(children[i], default);
           continue;
         }
 
         // reset annotations
-        if (i >= Children.Count)
+        if (i >= children.Count)
         {
           // children.Count < argumentList.Count
-          Children.Add(InstantiateChild());
+          children.Add(InstantiateChild());
         }
-        else if (Children[i] == null)
+        else if (children[i] == null)
         {
           // child is not initialized yet
-          Children[i] = InstantiateChild();
+          children[i] = InstantiateChild();
         }
-        action(Children[i], argumentList[i]);
+        action(children[i], argumentList[i]);
       }
     }
   }

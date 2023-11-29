@@ -10,15 +10,14 @@ namespace Mediapipe.Unity.UI
 {
   public class ModalContents : MonoBehaviour
   {
-    protected Modal GetModal() => transform.parent.TryGetComponent(out Modal m) ? m : null;
+    protected Modal GetModal()
+    {
+      return gameObject.transform.parent.gameObject.GetComponent<Modal>();
+    }
 
-    protected bool TryGetModal(out Modal m) => transform.parent.TryGetComponent(out m);
-    
     public virtual void Exit()
     {
-      if (TryGetModal(out Modal m) is false)
-        return;
-      m.Close();
+      GetModal().Close();
     }
   }
 }

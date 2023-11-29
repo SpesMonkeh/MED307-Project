@@ -9,40 +9,48 @@ using System.Text.RegularExpressions;
 
 public class UnicodeInlineText : Text
 {
-  bool disableDirty;
-  readonly Regex regexp = new(@"\\u(?<Value>[a-zA-Z0-9]+)");
+  private bool _disableDirty = false;
+  private readonly Regex _regexp = new Regex(@"\\u(?<Value>[a-zA-Z0-9]+)");
 
   protected override void OnPopulateMesh(VertexHelper vh)
   {
     var cache = text;
-    disableDirty = true;
+    _disableDirty = true;
     text = Decode(text);
     base.OnPopulateMesh(vh);
     text = cache;
-    disableDirty = false;
+    _disableDirty = false;
   }
 
-  string Decode(string value)
-    => regexp.Replace(value, m => ((char)int.Parse(m.Groups["Value"].Value, System.Globalization.NumberStyles.HexNumber)).ToString());
+  private string Decode(string value)
+  {
+    return _regexp.Replace(value, m => ((char)int.Parse(m.Groups["Value"].Value, System.Globalization.NumberStyles.HexNumber)).ToString());
+  }
 
   public override void SetLayoutDirty()
   {
-    if (disableDirty)
+    if (_disableDirty)
+    {
       return;
+    }
     base.SetLayoutDirty();
   }
 
   public override void SetVerticesDirty()
   {
-    if (disableDirty)
+    if (_disableDirty)
+    {
       return;
+    }
     base.SetVerticesDirty();
   }
 
   public override void SetMaterialDirty()
   {
-    if (disableDirty)
+    if (_disableDirty)
+    {
       return;
+    }
     base.SetMaterialDirty();
   }
 }

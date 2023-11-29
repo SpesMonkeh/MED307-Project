@@ -5,8 +5,6 @@
 // https://opensource.org/licenses/MIT.
 
 using System.Collections.Generic;
-using System.Linq;
-using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Mediapipe.Unity
@@ -17,22 +15,23 @@ namespace Mediapipe.Unity
 
   public sealed class MultiHandLandmarkListAnnotation : ListAnnotation<HandLandmarkListAnnotation>
   {
-    [SerializeField] Color _leftLandmarkColor = Color.green;
-    [SerializeField] Color _rightLandmarkColor = Color.green;
-    [SerializeField] float _landmarkRadius = 15.0f;
-    [SerializeField] Color _connectionColor = Color.white;
-    [SerializeField, Range(0, 1)] float _connectionWidth = 1f;
+    [SerializeField] private Color _leftLandmarkColor = Color.green;
+    [SerializeField] private Color _rightLandmarkColor = Color.green;
+    [SerializeField] private float _landmarkRadius = 15.0f;
+    [SerializeField] private Color _connectionColor = Color.white;
+    [SerializeField, Range(0, 1)] private float _connectionWidth = 1.0f;
 
 #if UNITY_EDITOR
-    void OnValidate()
+    private void OnValidate()
     {
-      if (UnityEditor.PrefabUtility.IsPartOfAnyPrefab(this))
-        return;
-      ApplyLeftLandmarkColor(_leftLandmarkColor);
-      ApplyRightLandmarkColor(_rightLandmarkColor);
-      ApplyLandmarkRadius(_landmarkRadius);
-      ApplyConnectionColor(_connectionColor);
-      ApplyConnectionWidth(_connectionWidth);
+      if (!UnityEditor.PrefabUtility.IsPartOfAnyPrefab(this))
+      {
+        ApplyLeftLandmarkColor(_leftLandmarkColor);
+        ApplyRightLandmarkColor(_rightLandmarkColor);
+        ApplyLandmarkRadius(_landmarkRadius);
+        ApplyConnectionColor(_connectionColor);
+        ApplyConnectionWidth(_connectionWidth);
+      }
     }
 #endif
 
@@ -66,34 +65,33 @@ namespace Mediapipe.Unity
       ApplyConnectionWidth(_connectionWidth);
     }
 
-    public void SetHandedness([NotNull]IList<ClassificationList> handedness)
+    public void SetHandedness(IList<ClassificationList> handedness)
     {
-      int count = handedness.Count;
-      for (var i = 0; i < Mathf.Min(count, Children.Count); i++)
+      var count = handedness == null ? 0 : handedness.Count;
+      for (var i = 0; i < Mathf.Min(count, children.Count); i++)
       {
-        Children[i].SetHandedness(handedness[i]);
+        children[i].SetHandedness(handedness[i]);
       }
-      for (var i = count; i < Children.Count; i++)
+      for (var i = count; i < children.Count; i++)
       {
-        Children[i].SetHandedness((IList<Classification>)null);
+        children[i].SetHandedness((IList<Classification>)null);
       }
     }
 
     public void Draw(IList<NormalizedLandmarkList> targets, bool visualizeZ = false)
     {
-      if (ActivateFor(targets) is false)
-        return;
-      
-      CallActionForAll(targets, (annotation, target) =>
-      { 
-        if (annotation != null) 
-          annotation.Draw(target, visualizeZ);
-      });
+      if (ActivateFor(targets))
+      {
+        CallActionForAll(targets, (annotation, target) =>
+        {
+          if (annotation != null) { annotation.Draw(target, visualizeZ); }
+        });
+      }
     }
 
-    protected override HandLandmarkListAnnotation InstantiateChild(bool setActive = true)
+    protected override HandLandmarkListAnnotation InstantiateChild(bool isActive = true)
     {
-      var annotation = base.InstantiateChild(setActive);
+      var annotation = base.InstantiateChild(isActive);
       annotation.SetLeftLandmarkColor(_leftLandmarkColor);
       annotation.SetRightLandmarkColor(_rightLandmarkColor);
       annotation.SetLandmarkRadius(_landmarkRadius);
@@ -102,17 +100,17 @@ namespace Mediapipe.Unity
       return annotation;
     }
 
-    void ApplyLeftLandmarkColor(Color leftLandmarkColor)
+    private void ApplyLeftLandmarkColor(Color leftLandmarkColor)
     {
-      foreach (var handLandmarkList in Children.Where(handLandmarkList => handLandmarkList != null))
-      { 
-        handLandmarkList.SetLeftLandmarkColor(leftLandmarkColor);
+      foreach (var handLandmarkList in children)
+      {
+        if (handLandmarkList != null) { handLandmarkList.SetLeftLandmarkColor(leftLandmarkColor); }
       }
     }
 
     private void ApplyRightLandmarkColor(Color rightLandmarkColor)
     {
-      foreach (var handLandmarkList in Children)
+      foreach (var handLandmarkList in children)
       {
         if (handLandmarkList != null) { handLandmarkList.SetRightLandmarkColor(rightLandmarkColor); }
       }
@@ -120,7 +118,7 @@ namespace Mediapipe.Unity
 
     private void ApplyLandmarkRadius(float landmarkRadius)
     {
-      foreach (var handLandmarkList in Children)
+      foreach (var handLandmarkList in children)
       {
         if (handLandmarkList != null) { handLandmarkList.SetLandmarkRadius(landmarkRadius); }
       }
@@ -128,7 +126,7 @@ namespace Mediapipe.Unity
 
     private void ApplyConnectionColor(Color connectionColor)
     {
-      foreach (var handLandmarkList in Children)
+      foreach (var handLandmarkList in children)
       {
         if (handLandmarkList != null) { handLandmarkList.SetConnectionColor(connectionColor); }
       }
@@ -136,7 +134,7 @@ namespace Mediapipe.Unity
 
     private void ApplyConnectionWidth(float connectionWidth)
     {
-      foreach (var handLandmarkList in Children)
+      foreach (var handLandmarkList in children)
       {
         if (handLandmarkList != null) { handLandmarkList.SetConnectionWidth(connectionWidth); }
       }

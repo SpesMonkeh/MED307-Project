@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Mediapipe.Unity;
-using P307.Runtime.Hands.MediaPipe;
 using P307.Runtime.Hands.ScriptableObjects;
 using UnityEngine;
 using static P307.Shared.Const307;

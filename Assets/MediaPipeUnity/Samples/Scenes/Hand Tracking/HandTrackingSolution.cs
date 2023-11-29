@@ -41,8 +41,6 @@ namespace Mediapipe.Unity.HandTracking
       set => graphRunner.minTrackingConfidence = value;
     }
 
-    public HandTrackingGraph GraphRunner => graphRunner; 
-
     protected override void OnStartRun()
     {
       if (!runningMode.IsSynchronous())
@@ -75,7 +73,7 @@ namespace Mediapipe.Unity.HandTracking
       List<LandmarkList> handWorldLandmarks = null;
       List<NormalizedRect> handRectsFromLandmarks = null;
       List<ClassificationList> handedness = null;
-      
+
       if (runningMode == RunningMode.Sync)
       {
         var _ = graphRunner.TryGetNext(out palmDetections, out handRectsFromPalmDetections, out handLandmarks, out handWorldLandmarks, out handRectsFromLandmarks, out handedness, true);

@@ -8,46 +8,50 @@ using UnityEngine;
 
 namespace Mediapipe.Unity
 {
-  public interface IHierarchicalAnnotation
+  public interface IHierachicalAnnotation
   {
-    IHierarchicalAnnotation root { get; }
+    IHierachicalAnnotation root { get; }
     Transform transform { get; }
     RectTransform GetAnnotationLayer();
     UnityEngine.Rect GetScreenRect();
   }
 
-  public abstract class HierarchicalAnnotation : MonoBehaviour, IHierarchicalAnnotation
+  public abstract class HierarchicalAnnotation : MonoBehaviour, IHierachicalAnnotation
   {
-    RectTransform rectTransform;
-    IHierarchicalAnnotation _root;
-
-    public IHierarchicalAnnotation root
+    private IHierachicalAnnotation _root;
+    public IHierachicalAnnotation root
     {
       get
       {
-        if (_root != null) 
-          return _root;
-        Transform tfParent = transform.parent;
-        _root = tfParent != null && tfParent.TryGetComponent(out IHierarchicalAnnotation parent) 
-          ? parent.root 
-          : this;
-        
+        if (_root == null)
+        {
+          var parentObj = transform.parent == null ? null : transform.parent.gameObject;
+          _root = (parentObj != null && parentObj.TryGetComponent<IHierachicalAnnotation>(out var parent)) ? parent.root : this;
+        }
         return _root;
       }
       protected set => _root = value;
     }
 
-    public RectTransform GetAnnotationLayer() => rectTransform ??= root.transform.parent.gameObject.GetComponent<RectTransform>();
+    public RectTransform GetAnnotationLayer()
+    {
+      return root.transform.parent.gameObject.GetComponent<RectTransform>();
+    }
 
-    public UnityEngine.Rect GetScreenRect() => GetAnnotationLayer().rect;
+    public UnityEngine.Rect GetScreenRect()
+    {
+      return GetAnnotationLayer().rect;
+    }
 
     public bool isActive => gameObject.activeSelf;
     public bool isActiveInHierarchy => gameObject.activeInHierarchy;
 
-    public void SetActive(bool activate)
+    public void SetActive(bool isActive)
     {
-      if (isActive != activate)
-        gameObject.SetActive(activate);
+      if (this.isActive != isActive)
+      {
+        gameObject.SetActive(isActive);
+      }
     }
 
     /// <summary>
@@ -81,12 +85,12 @@ namespace Mediapipe.Unity
       return annotation;
     }
 
-    protected TAnnotation InstantiateChild<TAnnotation>(string gameObjName = "Game Object") where TAnnotation : HierarchicalAnnotation
+    protected TAnnotation InstantiateChild<TAnnotation>(string name = "Game Object") where TAnnotation : HierarchicalAnnotation
     {
-      var gameObj = new GameObject(gameObjName);
-      gameObj.transform.SetParent(transform);
+      var gameObject = new GameObject(name);
+      gameObject.transform.SetParent(transform);
 
-      return gameObj.AddComponent<TAnnotation>();
+      return gameObject.AddComponent<TAnnotation>();
     }
   }
 }

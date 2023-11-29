@@ -97,9 +97,9 @@ namespace Mediapipe.Unity
       }
     }
 
-    protected override PointAnnotation InstantiateChild(bool setActive = true)
+    protected override PointAnnotation InstantiateChild(bool isActive = true)
     {
-      var annotation = base.InstantiateChild(setActive);
+      var annotation = base.InstantiateChild(isActive);
       annotation.SetColor(_color);
       annotation.SetRadius(_radius);
       return annotation;
@@ -107,7 +107,7 @@ namespace Mediapipe.Unity
 
     private void ApplyColor(Color color)
     {
-      foreach (var point in Children)
+      foreach (var point in children)
       {
         if (point != null) { point.SetColor(color); }
       }
@@ -115,7 +115,7 @@ namespace Mediapipe.Unity
 
     private void ApplyRadius(float radius)
     {
-      foreach (var point in Children)
+      foreach (var point in children)
       {
         if (point != null) { point.SetRadius(radius); }
       }

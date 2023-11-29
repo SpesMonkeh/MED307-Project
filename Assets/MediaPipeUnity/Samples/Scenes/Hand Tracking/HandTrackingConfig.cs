@@ -3,96 +3,94 @@
 // Use of this source code is governed by an MIT-style
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
-// Modified by SpesMonkeh, 2023. 
 
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Mediapipe.Unity.UI;
-using static P307.Shared.Const307;
 
 namespace Mediapipe.Unity.HandTracking.UI
 {
   public class HandTrackingConfig : ModalContents
   {
-    const string MODEL_COMPLEXITY_PATH = "Scroll View/Viewport/Contents/Model Complexity/Dropdown";
-    const string MAX_NUM_HANDS_PATH = "Scroll View/Viewport/Contents/Max Num Hands/InputField";
-    const string MIN_DETECTION_CONFIDENCE_PATH = "Scroll View/Viewport/Contents/Min Detection Confidence/InputField";
-    const string MIN_TRACKING_CONFIDENCE_PATH = "Scroll View/Viewport/Contents/Min Tracking Confidence/InputField";
-    const string RUNNING_MODE_PATH = "Scroll View/Viewport/Contents/Running Mode/Dropdown";
-    const string TIMEOUT_MILLISEC_PATH = "Scroll View/Viewport/Contents/Timeout Millisec/InputField";
+    private const string _ModelComplexityPath = "Scroll View/Viewport/Contents/Model Complexity/Dropdown";
+    private const string _MaxNumHandsPath = "Scroll View/Viewport/Contents/Max Num Hands/InputField";
+    private const string _MinDetectionConfidencePath = "Scroll View/Viewport/Contents/Min Detection Confidence/InputField";
+    private const string _MinTrackingConfidencePath = "Scroll View/Viewport/Contents/Min Tracking Confidence/InputField";
+    private const string _RunningModePath = "Scroll View/Viewport/Contents/Running Mode/Dropdown";
+    private const string _TimeoutMillisecPath = "Scroll View/Viewport/Contents/Timeout Millisec/InputField";
 
-    bool isChanged;
-    Dropdown runningModeInput;
-    Dropdown modelComplexityInput;
-    InputField maxNumHandsInput;
-    InputField minTrackingConfidenceInput;
-    InputField minDetectionConfidenceInput;
-    InputField timeoutMillisecInput;
-    HandTrackingSolution solution;
+    private HandTrackingSolution _solution;
+    private Dropdown _modelComplexityInput;
+    private InputField _maxNumHandsInput;
+    private InputField _minDetectionConfidenceInput;
+    private InputField _minTrackingConfidenceInput;
+    private Dropdown _runningModeInput;
+    private InputField _timeoutMillisecInput;
 
+    private bool _isChanged;
 
-    void Start()
+    private void Start()
     {
-      solution = GameObject.Find(MEDIAPIPE_SOLUTION).GetComponent<HandTrackingSolution>();
+      _solution = GameObject.Find("Solution").GetComponent<HandTrackingSolution>();
       InitializeContents();
     }
 
     public override void Exit()
     {
-      GetModal().CloseAndResume(isChanged);
+      GetModal().CloseAndResume(_isChanged);
     }
 
     public void SwitchModelComplexity()
     {
-      solution.modelComplexity = (HandTrackingGraph.ModelComplexity)modelComplexityInput.value;
-      isChanged = true;
+      _solution.modelComplexity = (HandTrackingGraph.ModelComplexity)_modelComplexityInput.value;
+      _isChanged = true;
     }
 
     public void UpdateMaxNumHands()
     {
-      if (int.TryParse(maxNumHandsInput.text, out var value))
+      if (int.TryParse(_maxNumHandsInput.text, out var value))
       {
-        solution.maxNumHands = Mathf.Max(0, value);
-        isChanged = true;
+        _solution.maxNumHands = Mathf.Max(0, value);
+        _isChanged = true;
       }
     }
 
     public void SetMinDetectionConfidence()
     {
-      if (float.TryParse(minDetectionConfidenceInput.text, out var value))
+      if (float.TryParse(_minDetectionConfidenceInput.text, out var value))
       {
-        solution.minDetectionConfidence = value;
-        isChanged = true;
+        _solution.minDetectionConfidence = value;
+        _isChanged = true;
       }
     }
 
     public void SetMinTrackingConfidence()
     {
-      if (float.TryParse(minTrackingConfidenceInput.text, out var value))
+      if (float.TryParse(_minTrackingConfidenceInput.text, out var value))
       {
-        solution.minTrackingConfidence = value;
-        isChanged = true;
+        _solution.minTrackingConfidence = value;
+        _isChanged = true;
       }
     }
 
     public void SwitchRunningMode()
     {
-      solution.runningMode = (RunningMode)runningModeInput.value;
-      isChanged = true;
+      _solution.runningMode = (RunningMode)_runningModeInput.value;
+      _isChanged = true;
     }
 
     public void SetTimeoutMillisec()
     {
-      if (int.TryParse(timeoutMillisecInput.text, out var value))
+      if (int.TryParse(_timeoutMillisecInput.text, out var value))
       {
-        solution.timeoutMillisec = value;
-        isChanged = true;
+        _solution.timeoutMillisec = value;
+        _isChanged = true;
       }
     }
 
-    void InitializeContents()
+    private void InitializeContents()
     {
       InitializeModelComplexity();
       InitializeMaxNumHands();
@@ -104,68 +102,68 @@ namespace Mediapipe.Unity.HandTracking.UI
 
     private void InitializeModelComplexity()
     {
-      modelComplexityInput = gameObject.transform.Find(MODEL_COMPLEXITY_PATH).gameObject.GetComponent<Dropdown>();
-      modelComplexityInput.ClearOptions();
+      _modelComplexityInput = gameObject.transform.Find(_ModelComplexityPath).gameObject.GetComponent<Dropdown>();
+      _modelComplexityInput.ClearOptions();
 
       var options = new List<string>(Enum.GetNames(typeof(HandTrackingGraph.ModelComplexity)));
-      modelComplexityInput.AddOptions(options);
+      _modelComplexityInput.AddOptions(options);
 
-      var currentModelComplexity = solution.modelComplexity;
+      var currentModelComplexity = _solution.modelComplexity;
       var defaultValue = options.FindIndex(option => option == currentModelComplexity.ToString());
 
       if (defaultValue >= 0)
       {
-        modelComplexityInput.value = defaultValue;
+        _modelComplexityInput.value = defaultValue;
       }
 
-      modelComplexityInput.onValueChanged.AddListener(delegate { SwitchModelComplexity(); });
+      _modelComplexityInput.onValueChanged.AddListener(delegate { SwitchModelComplexity(); });
     }
 
     private void InitializeMaxNumHands()
     {
-      maxNumHandsInput = gameObject.transform.Find(MAX_NUM_HANDS_PATH).gameObject.GetComponent<InputField>();
-      maxNumHandsInput.text = solution.maxNumHands.ToString();
-      maxNumHandsInput.onEndEdit.AddListener(delegate { UpdateMaxNumHands(); });
+      _maxNumHandsInput = gameObject.transform.Find(_MaxNumHandsPath).gameObject.GetComponent<InputField>();
+      _maxNumHandsInput.text = _solution.maxNumHands.ToString();
+      _maxNumHandsInput.onEndEdit.AddListener(delegate { UpdateMaxNumHands(); });
     }
 
     private void InitializeMinDetectionConfidence()
     {
-      minDetectionConfidenceInput = gameObject.transform.Find(MIN_DETECTION_CONFIDENCE_PATH).gameObject.GetComponent<InputField>();
-      minDetectionConfidenceInput.text = solution.minDetectionConfidence.ToString();
-      minDetectionConfidenceInput.onValueChanged.AddListener(delegate { SetMinDetectionConfidence(); });
+      _minDetectionConfidenceInput = gameObject.transform.Find(_MinDetectionConfidencePath).gameObject.GetComponent<InputField>();
+      _minDetectionConfidenceInput.text = _solution.minDetectionConfidence.ToString();
+      _minDetectionConfidenceInput.onValueChanged.AddListener(delegate { SetMinDetectionConfidence(); });
     }
 
     private void InitializeMinTrackingConfidence()
     {
-      minTrackingConfidenceInput = gameObject.transform.Find(MIN_TRACKING_CONFIDENCE_PATH).gameObject.GetComponent<InputField>();
-      minTrackingConfidenceInput.text = solution.minTrackingConfidence.ToString();
-      minTrackingConfidenceInput.onValueChanged.AddListener(delegate { SetMinTrackingConfidence(); });
+      _minTrackingConfidenceInput = gameObject.transform.Find(_MinTrackingConfidencePath).gameObject.GetComponent<InputField>();
+      _minTrackingConfidenceInput.text = _solution.minTrackingConfidence.ToString();
+      _minTrackingConfidenceInput.onValueChanged.AddListener(delegate { SetMinTrackingConfidence(); });
     }
 
     private void InitializeRunningMode()
     {
-      runningModeInput = gameObject.transform.Find(RUNNING_MODE_PATH).gameObject.GetComponent<Dropdown>();
-      runningModeInput.ClearOptions();
+      _runningModeInput = gameObject.transform.Find(_RunningModePath).gameObject.GetComponent<Dropdown>();
+      _runningModeInput.ClearOptions();
 
       var options = new List<string>(Enum.GetNames(typeof(RunningMode)));
-      runningModeInput.AddOptions(options);
+      _runningModeInput.AddOptions(options);
 
-      var currentRunningMode = solution.runningMode;
+      var currentRunningMode = _solution.runningMode;
       var defaultValue = options.FindIndex(option => option == currentRunningMode.ToString());
 
       if (defaultValue >= 0)
       {
-        runningModeInput.value = defaultValue;
+        _runningModeInput.value = defaultValue;
       }
 
-      runningModeInput.onValueChanged.AddListener(delegate { SwitchRunningMode(); });
+      _runningModeInput.onValueChanged.AddListener(delegate { SwitchRunningMode(); });
     }
 
     private void InitializeTimeoutMillisec()
     {
-      timeoutMillisecInput = gameObject.transform.Find(TIMEOUT_MILLISEC_PATH).gameObject.GetComponent<InputField>();
-      timeoutMillisecInput.text = solution.timeoutMillisec.ToString();
-      timeoutMillisecInput.onValueChanged.AddListener(delegate { SetTimeoutMillisec(); });
+      _timeoutMillisecInput = gameObject.transform.Find(_TimeoutMillisecPath).gameObject.GetComponent<InputField>();
+      _timeoutMillisecInput.text = _solution.timeoutMillisec.ToString();
+      _timeoutMillisecInput.onValueChanged.AddListener(delegate { SetTimeoutMillisec(); });
     }
   }
 }

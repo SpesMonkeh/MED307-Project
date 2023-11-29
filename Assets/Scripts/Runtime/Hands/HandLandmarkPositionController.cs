@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Mediapipe.Unity;
-using P307.Runtime.Hands.MediaPipe;
+using P307.Runtime.ComputerVision.MediaPipe;
 using P307.Runtime.Hands.ScriptableObjects;
 using P307.Shared;
 using UnityEngine;

@@ -200,6 +200,7 @@ namespace P307.Runtime.Hands
 		{
 			var go = GameObject.CreatePrimitive(primitiveType);
 			var mesh = go.GetComponent<MeshFilter>().sharedMesh;
+			UnityEngine.Debug.Log("Get Landmark Mesh");
 #if UNITY_EDITOR
 			Object.DestroyImmediate(go);
 #else

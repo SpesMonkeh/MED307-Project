@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Mediapipe.Unity;
+using P307.Runtime.ComputerVision.MediaPipe;
 using P307.Runtime.Hands.ScriptableObjects;
 using UnityEngine;
 using static P307.Shared.Const307;
@@ -20,6 +21,7 @@ namespace P307.Runtime.Hands
 		
 		void OnEnable()
 		{
+			
 			PointListAnnotationVoyeur.pointAnnotationsSet += OnPointAnnotationsSet;
 		}
 

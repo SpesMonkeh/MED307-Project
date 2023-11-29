@@ -100,12 +100,12 @@ namespace Mediapipe.Unity
       Logger.LogWarning(TAG, "Global Bootstrap instance is not found (maybe running a sample scene directly), "
                             + "so activating a fallback Bootstrap instance attached to each Solution object");
 
-      var bootstrap = GetComponent<Bootstrap>();
-      bootstrap.enabled = true;
+      var bootstrapComponent = GetComponent<Bootstrap>();
+      bootstrapComponent.enabled = true;
 
       // hide menu button when trying a single scene.
       DisableMenuButton();
-      return bootstrap;
+      return bootstrapComponent;
     }
 
     private void DisableMenuButton()
